@@ -40,3 +40,10 @@ gem 'jbuilder', '~> 1.0.1'
 group :test, :development do
   gem 'rspec-rails'
 end
+
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit'
+end
