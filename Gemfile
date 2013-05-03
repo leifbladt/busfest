@@ -46,4 +46,5 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit'
+  gem 'shoulda-matchers'
 end
