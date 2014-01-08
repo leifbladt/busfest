@@ -9,6 +9,6 @@ import org.wicketstuff.annotation.mount.MountPath;
 public class RegistrationPage extends BasePage {
     @Override
     protected String pageTitle() {
-        return "Registration";
+        return "Anmeldung";
     }
 }

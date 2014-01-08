@@ -35,10 +35,12 @@ public abstract class BasePage extends WebPage {
         add(pageTitle);
 
         Navbar navbar = new Navbar("navbar");
-        navbar.brandName(Model.of("busfest"));
+        navbar.setPosition(Navbar.Position.STATIC_TOP);
+        // TODO Show active busfest (like 'Kirchzarten 2014')
+        navbar.brandName(Model.of("Kirchzarten 2014"));
         navbar.addComponents(
                 new ImmutableNavbarComponent(new NavbarButton<BasePage>(DashboardPage.class, Model.of("Dashboard"))),
-                new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(RegistrationPage.class, Model.of("Registrierung"))),
+                new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(RegistrationPage.class, Model.of("Anmeldung"))),
                 new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(ReportPage.class, Model.of("Auswertung"))),
                 new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(PayoffPage.class, Model.of("Abrechnung")))
         );
