@@ -7,4 +7,8 @@ import org.wicketstuff.annotation.mount.MountPath;
  */
 @MountPath("report")
 public class ReportPage extends BasePage {
+    @Override
+    protected String pageTitle() {
+        return "Report";
+    }
 }
