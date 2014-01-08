@@ -1,4 +1,4 @@
-package info.bladt;
+package info.bladt.busfest.page;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.ImmutableNavbarComponent;
@@ -32,7 +32,11 @@ public class BasePage extends WebPage {
 
         Navbar navbar = new Navbar("navbar");
         navbar.brandName(Model.of("busfest"));
-        navbar.addComponents(new ImmutableNavbarComponent(new NavbarButton<HomePage>(HomePage.class, Model.of("Home"))));
+        navbar.addComponents(
+                new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(DashboardPage.class, Model.of("Dashboard"))),
+                new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(RegistrationPage.class, Model.of("Registrierung"))),
+                new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(ReportPage.class, Model.of("Auswertung")))
+        );
 
         add(navbar);
     }

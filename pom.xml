@@ -75,6 +75,12 @@
     </dependency>
     -->
 
+    <dependency>
+      <groupId>org.wicketstuff</groupId>
+      <artifactId>wicketstuff-annotation</artifactId>
+      <version>6.11.0</version>
+    </dependency>
+
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
