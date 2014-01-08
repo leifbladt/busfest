@@ -4,6 +4,66 @@
 <body>
 
 <wicket:extend>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Persoenliche Angaben</legend>
+            <div class="control-group">
+                <label class="control-label">Vorname</label>
+                <div class="controls">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Nachname</label>
+                <div class="controls">
+                    <input type="text">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Uebernachtungen</legend>
+            <div class="control-group">
+                <label class="control-label">Wohnwagen</label>
+                <div class="controls">
+                    <!-- TODO Radio button group -->
+                    <label class="radio inline">
+                        <input type="radio">ja
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio">nein
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Verpflegung</legend>
+            <div class="control-group">
+                <label class="control-label">Broetchen</label>
+                <div class="controls">
+                    <input type="text" class="span1">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Roggenbroetchen</label>
+                <div class="controls">
+                    <input type="text" class="span1">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Brezeln</label>
+                <div class="controls">
+                    <input type="text" class="span1">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Anmelden</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 </wicket:extend>
 
 </body>
