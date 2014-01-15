@@ -4,25 +4,34 @@
 <body>
 
 <wicket:extend>
-    <form class="form-horizontal">
+    <form wicket:id="visitor">
         <fieldset>
-            <legend>Persoenliche Angaben</legend>
-            <div class="control-group">
-                <label class="control-label">Vorname</label>
-                <div class="controls">
-                    <input type="text">
-                </div>
+            <legend>Pers&ouml;nliche Angaben</legend>
+            <div wicket:id="nameGroup">
+                <input type="text" wicket:id="firstName">
+                <input type="text" wicket:id="lastName">
             </div>
-            <div class="control-group">
-                <label class="control-label">Nachname</label>
-                <div class="controls">
-                    <input type="text">
-                </div>
+            <div wicket:id="addressGroup">
+                <input type="text" wicket:id="address">
+            </div>
+            <div wicket:id="cityGroup">
+                <input type="text" wicket:id="zipCode">
+                <input type="text" wicket:id="city">
+            </div>
+            <div wicket:id="countryGroup">
+                <input type="text" wicket:id="country">
+            </div>
+            <div wicket:id="dateOfBirthGroup">
+                <input type="text" wicket:id="dateOfBirth">
             </div>
         </fieldset>
 
+    </form>
+
+    <form class="form-horizontal">
+
         <fieldset>
-            <legend>Uebernachtungen</legend>
+            <legend>&Uuml;bernachtungen</legend>
             <div class="control-group">
                 <label class="control-label">Wohnwagen</label>
                 <div class="controls">
