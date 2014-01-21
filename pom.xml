@@ -27,7 +27,7 @@
 	<name>busfest</name>
 
   <scm>
-    <developerConnection>scm:git: git@github.com:leifbladt/busfest.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/leifbladt/busfest.git</developerConnection>
   </scm>
 
 
