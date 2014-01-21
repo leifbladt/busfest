@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="wizard.registration.step.visitor.title">Persönliche Daten</entry>
+  <entry key="wizard.registration.step.vehicle.title">Fahrzeugdaten</entry>
+  <entry key="wizard.registration.step.overnight.title">Übernachtungen</entry>
+  <entry key="wizard.registration.step.provisions.title">Verpflegung</entry>
+  <entry key="wizard.registration.step.confirmation.title">Bestätigung</entry>
+</properties>

@@ -4,75 +4,7 @@
 <body>
 
 <wicket:extend>
-    <form wicket:id="visitor">
-        <fieldset>
-            <legend>Pers&ouml;nliche Angaben</legend>
-            <div wicket:id="nameGroup">
-                <input type="text" wicket:id="firstName">
-                <input type="text" wicket:id="lastName">
-            </div>
-            <div wicket:id="addressGroup">
-                <input type="text" wicket:id="address">
-            </div>
-            <div wicket:id="cityGroup">
-                <input type="text" wicket:id="zipCode">
-                <input type="text" wicket:id="city">
-            </div>
-            <div wicket:id="countryGroup">
-                <input type="text" wicket:id="country">
-            </div>
-            <div wicket:id="dateOfBirthGroup">
-                <input type="text" wicket:id="dateOfBirth">
-            </div>
-        </fieldset>
-
-    </form>
-
-    <form class="form-horizontal">
-
-        <fieldset>
-            <legend>&Uuml;bernachtungen</legend>
-            <div class="control-group">
-                <label class="control-label">Wohnwagen</label>
-                <div class="controls">
-                    <!-- TODO Radio button group -->
-                    <label class="radio inline">
-                        <input type="radio">ja
-                    </label>
-                    <label class="radio inline">
-                        <input type="radio">nein
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Verpflegung</legend>
-            <div class="control-group">
-                <label class="control-label">Broetchen</label>
-                <div class="controls">
-                    <input type="text" class="span1">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Roggenbroetchen</label>
-                <div class="controls">
-                    <input type="text" class="span1">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Brezeln</label>
-                <div class="controls">
-                    <input type="text" class="span1">
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn">Anmelden</button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+    <div wicket:id="registrationWizard">[Wizard]</div>
 </wicket:extend>
 
 </body>

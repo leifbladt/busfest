@@ -21,12 +21,9 @@ public class Visitor implements Serializable {
 
     private Date dateOfBirth;
 
-    // TODO Attribute or own model?
-    private String licensePlateNumber;
-
     public Visitor() {}
 
-    public Visitor(String firstName, String lastName, String address, String zipCode, String city, String country, Date dateOfBirth, String licensePlateNumber) {
+    public Visitor(String firstName, String lastName, String address, String zipCode, String city, String country, Date dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -34,7 +31,6 @@ public class Visitor implements Serializable {
         this.city = city;
         this.country = country;
         this.dateOfBirth = dateOfBirth;
-        this.licensePlateNumber = licensePlateNumber;
     }
 
     public Date getDateOfBirth() {
@@ -43,14 +39,6 @@ public class Visitor implements Serializable {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getLicensePlateNumber() {
-        return licensePlateNumber;
-    }
-
-    public void setLicensePlateNumber(String licensePlateNumber) {
-        this.licensePlateNumber = licensePlateNumber;
     }
 
     public String getCountry() {
