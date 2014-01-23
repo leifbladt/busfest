@@ -2,7 +2,6 @@ package info.bladt.busfest.page;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuDivider;
-import de.agilecoders.wicket.core.markup.html.bootstrap.heading.Heading;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.ImmutableNavbarComponent;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
@@ -40,9 +39,6 @@ public abstract class BasePage extends WebPage {
         HtmlTag html = new HtmlTag("html");
         add(html);
 
-        Heading pageTitle = new Heading("page-title", Model.of(pageTitle()));
-        add(pageTitle);
-
         NavbarDropDownButton settings = new NavbarDropDownButton(Model.of("Einstellungen")) {
             @Override
             protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
@@ -67,6 +63,4 @@ public abstract class BasePage extends WebPage {
 
         add(navbar);
     }
-
-    protected abstract String pageTitle();
 }

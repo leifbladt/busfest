@@ -7,8 +7,4 @@ import org.wicketstuff.annotation.mount.MountPath;
  */
 @MountPath("/payoff")
 public class PayoffPage extends BasePage {
-    @Override
-    protected String pageTitle() {
-        return "Abrechnung";
-    }
 }

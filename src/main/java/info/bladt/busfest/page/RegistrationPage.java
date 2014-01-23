@@ -16,9 +16,4 @@ public class RegistrationPage extends BasePage {
         Wizard wizard = new RegistrationWizard("registrationWizard");
         add(wizard);
     }
-
-    @Override
-    protected String pageTitle() {
-        return "Anmeldung";
-    }
 }
