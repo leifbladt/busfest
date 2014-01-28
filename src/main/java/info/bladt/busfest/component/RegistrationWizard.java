@@ -1,18 +1,23 @@
 package info.bladt.busfest.component;
 
+import info.bladt.busfest.model.VisitorModel;
 import info.bladt.busfest.page.DashboardPage;
 import info.bladt.busfest.page.ReportPage;
+import org.apache.wicket.Component;
 import org.apache.wicket.extensions.wizard.Wizard;
-import org.apache.wicket.extensions.wizard.WizardModel;
-import org.apache.wicket.extensions.wizard.WizardStep;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
 public class RegistrationWizard extends Wizard {
 
-    public RegistrationWizard(String id) {
-        super(id, new RegistrationWizardModel());
+    private final VisitorModel visitorModel;
+
+    public RegistrationWizard(String id, RegistrationWizardModel registrationWizardModel) {
+        super(id, registrationWizardModel, false);
+
+        visitorModel = new VisitorModel();
+        setDefaultModel(visitorModel);
     }
 
     @Override
@@ -25,18 +30,9 @@ public class RegistrationWizard extends Wizard {
         setResponsePage(ReportPage.class);
     }
 
-    private static class RegistrationWizardModel extends WizardModel {
-        private RegistrationWizardModel() {
-            WizardStep personalDataStep = new PersonalDataWizardStep();
-            WizardStep vehicleStep = new VehicleWizardStep();
-            WizardStep overnightStep = new OvernightDataWizardStep();
-            WizardStep provisionsStep = new ProvisionsWizardStep();
-            WizardStep confirmationStep = new ConfirmationWizardStep();
-            add(personalDataStep);
-            add(vehicleStep);
-            add(overnightStep);
-            add(provisionsStep);
-            add(confirmationStep);
-        }
+    @Override
+    protected Component newButtonBar(String id) {
+//        return new Label(id, "Label");
+        return super.newButtonBar(id);
     }
 }

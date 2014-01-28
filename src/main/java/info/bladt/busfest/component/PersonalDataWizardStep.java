@@ -5,7 +5,6 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
 import info.bladt.busfest.model.Visitor;
-import info.bladt.busfest.model.VisitorModel;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -16,12 +15,12 @@ import org.apache.wicket.model.ResourceModel;
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
 public class PersonalDataWizardStep extends WizardStep {
-    public PersonalDataWizardStep() {
+    public PersonalDataWizardStep(CompoundPropertyModel<Visitor> visitorModel) {
         super(new ResourceModel("wizard.registration.step.visitor.title"), Model.of(""));
 
-        final BootstrapForm<Visitor> form = new BootstrapForm<Visitor>("visitor", new VisitorModel());
+        final BootstrapForm<Visitor> form = new BootstrapForm<Visitor>("visitor", visitorModel);
         form.type(FormType.Horizontal);
-        form.setDefaultModel(new CompoundPropertyModel(new VisitorModel()));
+        form.setDefaultModel(visitorModel);
 
         ControlGroup nameGroup = new ControlGroup("nameGroup", Model.of("Vorname / Nachname"));
         TextField firstName = new TextField("firstName");
