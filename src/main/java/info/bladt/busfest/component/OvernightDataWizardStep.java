@@ -1,7 +1,7 @@
 package info.bladt.busfest.component;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
-import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.OvernightData;
 import org.apache.wicket.extensions.wizard.WizardStep;
@@ -22,7 +22,7 @@ public class OvernightDataWizardStep extends WizardStep {
         form.type(FormType.Horizontal);
         form.setDefaultModel(new CompoundPropertyModel(new OvernightData()));
 
-        ControlGroup caravanGroup = new ControlGroup("caravanGroup", Model.of("Wohnwagen"));
+        FormGroup caravanGroup = new FormGroup("caravanGroup", Model.of("Wohnwagen"));
         RadioGroup caravanRadioGroup = new RadioGroup("caravanRadioGroup");
         Radio radioYes = new Radio("Ja");
         Radio radioNo = new Radio("Nein");

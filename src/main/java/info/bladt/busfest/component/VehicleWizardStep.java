@@ -1,10 +1,10 @@
 package info.bladt.busfest.component;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
-import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
-import info.bladt.busfest.persistence.Vehicle;
 import info.bladt.busfest.model.VehicleModel;
+import info.bladt.busfest.persistence.Vehicle;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -22,12 +22,12 @@ public class VehicleWizardStep extends WizardStep {
         form.type(FormType.Horizontal);
         form.setDefaultModel(new CompoundPropertyModel(new VehicleModel()));
 
-        ControlGroup typeGroup = new ControlGroup("typeGroup", Model.of("Typ"));
+        FormGroup typeGroup = new FormGroup("typeGroup", Model.of("Typ"));
         TextField type = new TextField("type");
         typeGroup.add(type);
         form.add(typeGroup);
 
-        ControlGroup licensePlateNumberGroup = new ControlGroup("licensePlateNumberGroup", Model.of("Nummernschild"));
+        FormGroup licensePlateNumberGroup = new FormGroup("licensePlateNumberGroup", Model.of("Nummernschild"));
         TextField licensePlateNumber = new TextField("licensePlateNumber");
         licensePlateNumberGroup.add(licensePlateNumber);
         form.add(licensePlateNumberGroup);

@@ -1,7 +1,7 @@
 package info.bladt.busfest.page;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
-import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.VisitorModel;
 import info.bladt.busfest.persistence.Visitor;
@@ -56,7 +56,7 @@ public class NewRegistrationPage extends BasePage {
             setDefaultModel(new CompoundPropertyModel(this));
             type(FormType.Horizontal);
 
-            ControlGroup nameGroup = new ControlGroup("nameGroup", Model.of("Vorname / Nachname"));
+            FormGroup nameGroup = new FormGroup("nameGroup", Model.of("Vorname / Nachname"));
             nameGroup.add(new TextField("firstName"));
             nameGroup.add(new TextField("lastName"));
             add(nameGroup);
@@ -67,6 +67,12 @@ public class NewRegistrationPage extends BasePage {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     super.onSubmit(target, form);
                     System.out.println("onAjaxSubmit: " + firstName);
+                }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    super.onError(target, form);
+                    System.out.println("onError!");
                 }
             });
         }
