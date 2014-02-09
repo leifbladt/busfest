@@ -1,13 +1,23 @@
 <wicket:panel>
+    <form wicket:id="overnightData">
+        <div wicket:id="caravanGroup">
+            <!--<input type="text" wicket:id="type">-->
+            <span wicket:id="caravanRadioGroup">
+                <input type="radio" wicket:id="Ja">
+                <input type="radio" wicket:id="Nein">
+            </span>
+        </div>
+    </form>
+
     <form class="form-horizontal">
         <div class="control-group">
             <label class="control-label">Wohnwagen</label>
             <div class="controls">
                 <!-- TODO Radio button group -->
-                <label class="radio inline">
+                <label class="radio">
                     <input type="radio">ja
                 </label>
-                <label class="radio inline">
+                <label class="radio">
                     <input type="radio">nein
                 </label>
             </div>

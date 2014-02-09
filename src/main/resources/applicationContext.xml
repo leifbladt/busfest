@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <import resource="classpath*:in-memory-database.xml" />
+  <import resource="classpath*:in-memory-datasource.xml" />
+
+  <!--<bean id="log4j" class="com.oneandone.ebusiness.commons.log.Log4jInstantiation">-->
+    <!--<constructor-arg type="java.lang.String" value="log4j.${app.mode:development}.xml"/>-->
+  <!--</bean>-->
+</beans>

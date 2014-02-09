@@ -15,6 +15,13 @@ public class Convention implements Serializable {
 
     private Date endDate;
 
+    // TODO Right type?
+    private Float overnightCostBus;
+
+    private Float overnightCostCaravan;
+
+    private Float dayVisitorCost;
+
     public Convention() {}
 
     public Convention(String location, int conventionNumber, Date startDate, Date endDate) {
@@ -58,5 +65,29 @@ public class Convention implements Serializable {
 
     public String getDisplayName() {
         return String.format("%s 2014", getLocation());
+    }
+
+    public Float getOvernightCostBus() {
+        return overnightCostBus;
+    }
+
+    public void setOvernightCostBus(Float overnightCostBus) {
+        this.overnightCostBus = overnightCostBus;
+    }
+
+    public Float getOvernightCostCaravan() {
+        return overnightCostCaravan;
+    }
+
+    public void setOvernightCostCaravan(Float overnightCostCaravan) {
+        this.overnightCostCaravan = overnightCostCaravan;
+    }
+
+    public Float getDayVisitorCost() {
+        return dayVisitorCost;
+    }
+
+    public void setDayVisitorCost(Float dayVisitorCost) {
+        this.dayVisitorCost = dayVisitorCost;
     }
 }

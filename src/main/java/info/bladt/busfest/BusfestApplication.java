@@ -9,10 +9,10 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.wicketstuff.annotation.scan.AnnotatedMountScanner;
 
-public class BusfestApplication extends WebApplication
-{
+public class BusfestApplication extends WebApplication {
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -31,8 +31,16 @@ public class BusfestApplication extends WebApplication
 		super.init();
 
         // Scan for @MountPath annotation and mounts them
-        new AnnotatedMountScanner().scanPackage("info.bladt").mount(this);
+        new AnnotatedMountScanner().scanPackage("info.bladt.busfest").mount(this);
 
+        getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+
+//        // JPA
+//        AbstractApplicationContext context = new AnnotationConfigApplicationContext();
+//        VisitorRepository repository = context.getBean(VisitorRepository.class);
+
+
+        // Bootstrap
         Bootstrap.install(this, new BootstrapSettings());
         BootstrapLess.install(this);
 	}

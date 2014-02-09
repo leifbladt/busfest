@@ -1,6 +1,6 @@
 package info.bladt.busfest.component;
 
-import info.bladt.busfest.model.Visitor;
+import info.bladt.busfest.persistence.Visitor;
 import org.apache.wicket.extensions.wizard.WizardModel;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.model.CompoundPropertyModel;

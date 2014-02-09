@@ -5,22 +5,24 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
 import info.bladt.busfest.persistence.Visitor;
-import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
-public class PersonalDataWizardStep extends WizardStep {
-    public PersonalDataWizardStep(CompoundPropertyModel<Visitor> visitorModel) {
-        super(new ResourceModel("wizard.registration.step.visitor.title"), Model.of(""));
+public class VisitorInputPanel extends Panel {
 
-        final BootstrapForm<Visitor> form = new BootstrapForm<Visitor>("visitor", visitorModel);
+    public VisitorInputPanel(String id, IModel<Visitor> visitorModel) {
+        super(id, visitorModel);
+        IModel<Visitor> compound = new CompoundPropertyModel<Visitor>(visitorModel);
+
+        final BootstrapForm<Visitor> form = new BootstrapForm<Visitor>("visitor", compound);
         form.type(FormType.Horizontal);
-        form.setDefaultModel(visitorModel);
+//        form.setDefaultModel(visitorModel);
 
         ControlGroup nameGroup = new ControlGroup("nameGroup", Model.of("Vorname / Nachname"));
         TextField firstName = new TextField("firstName");

@@ -1,24 +1,44 @@
-package info.bladt.busfest.model;
+package info.bladt.busfest.persistence;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
+@Table(name = "visitors")
+@Entity
 public class Visitor implements Serializable {
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "address")
     private String address;
 
+    @Column(name = "zip_code")
     private String zipCode;
 
+    @Column(name = "city")
     private String city;
 
+    @Column(name = "country")
     private String country;
 
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
     public Visitor() {}
