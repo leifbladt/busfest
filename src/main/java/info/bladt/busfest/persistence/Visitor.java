@@ -15,6 +15,8 @@ import java.util.Date;
 @Table(name = "visitors")
 @Entity
 public class Visitor implements Serializable {
+    // TODO Club-IG
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,8 +28,8 @@ public class Visitor implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "street")
+    private String street;
 
     @Column(name = "zip_code")
     private String zipCode;
@@ -41,16 +43,24 @@ public class Visitor implements Serializable {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
+    @Column(name = "telephone_number")
+    private String telephoneNumber;
+
+    @Column(name = "email_address")
+    private String emailAddress;
+
     public Visitor() {}
 
-    public Visitor(String firstName, String lastName, String address, String zipCode, String city, String country, Date dateOfBirth) {
+    public Visitor(String firstName, String lastName, String street, String zipCode, String city, String country, Date dateOfBirth, String telephoneNumber, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.street = street;
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
         this.dateOfBirth = dateOfBirth;
+        this.telephoneNumber = telephoneNumber;
+        this.emailAddress = emailAddress;
     }
 
     public Date getDateOfBirth() {
@@ -85,12 +95,12 @@ public class Visitor implements Serializable {
         this.zipCode = zipCode;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getLastName() {
@@ -106,6 +116,23 @@ public class Visitor implements Serializable {
     }
 
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

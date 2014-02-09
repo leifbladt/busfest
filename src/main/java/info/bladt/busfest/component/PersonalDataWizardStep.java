@@ -29,10 +29,10 @@ public class PersonalDataWizardStep extends WizardStep {
         nameGroup.add(lastName);
         form.add(nameGroup);
 
-        ControlGroup addressGroup = new ControlGroup("addressGroup", Model.of("Strasse"));
-        TextField address = new TextField("address");
-        addressGroup.add(address);
-        form.add(addressGroup);
+        ControlGroup streetGroup = new ControlGroup("streetGroup", Model.of("Strasse"));
+        TextField street = new TextField("street");
+        streetGroup.add(street);
+        form.add(streetGroup);
 
         ControlGroup cityGroup = new ControlGroup("cityGroup", Model.of("PLZ / Ort"));
         TextField zipCode = new TextField("zipCode");
