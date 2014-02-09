@@ -1,16 +1,19 @@
 package info.bladt.busfest.page;
 
-import info.bladt.busfest.component.RegistrationWizard;
-import info.bladt.busfest.component.RegistrationWizardModel;
-import info.bladt.busfest.persistence.ConventionAttendance;
-import info.bladt.busfest.persistence.Visitor;
+import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapBookmarkablePageLink;
+import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
+import de.agilecoders.wicket.core.markup.html.bootstrap.table.TableBehavior;
 import info.bladt.busfest.persistence.repository.ConventionAttendanceRepository;
-import org.apache.wicket.extensions.wizard.Wizard;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
+import info.bladt.busfest.provider.ConventionAttendanceProvider;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -24,11 +27,17 @@ public class RegistrationPage extends BasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-//        CompoundPropertyModel<Visitor> visitorModel = new CompoundPropertyModel<Visitor>(new Visitor());
-//        Wizard wizard = new RegistrationWizard("registrationWizard", new RegistrationWizardModel(visitorModel));
-//        add(wizard);
+        BootstrapBookmarkablePageLink<NewRegistrationPage> newRegistration = new BootstrapBookmarkablePageLink<NewRegistrationPage>("newRegistration", NewRegistrationPage.class, Buttons.Type.Primary);
+        newRegistration.setLabel(Model.of("Neue Anmeldung"));
+        add(newRegistration);
 
-        ConventionAttendance conventionAttendance = conventionAttendanceRepository.findOne(1L);
-        add(new Label("label", new PropertyModel<String>(conventionAttendance, "visitor.lastName")));
+        List<IColumn> columns = new ArrayList<IColumn>();
+        columns.add(new PropertyColumn(Model.of("Nachname"), "visitor.lastName"));
+        columns.add(new PropertyColumn(Model.of("Vorname"), "visitor.firstName"));
+        columns.add(new PropertyColumn(Model.of("Fahrzeugtyp"), "vehicle.type"));
+        columns.add(new PropertyColumn(Model.of("Kennzeichen"), "vehicle.licensePlateNumber"));
+        DefaultDataTable latestAttendances = new DefaultDataTable("latestAttendances", columns, new ConventionAttendanceProvider(), 5);
+        latestAttendances.add(new TableBehavior());
+        add(latestAttendances);
     }
 }

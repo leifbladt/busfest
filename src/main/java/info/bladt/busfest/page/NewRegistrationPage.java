@@ -91,6 +91,7 @@ public class NewRegistrationPage extends BasePage {
                 VehicleFormModel modelObject = (VehicleFormModel)form.getModelObject();
                 System.out.println("onSubmitAgain!!! " + modelObject.getType());
 
+                // TODO Not really needed on success, on error?
                 vehicleForm.setVisible(false);
                 target.add(vehicleForm);
 
@@ -98,8 +99,6 @@ public class NewRegistrationPage extends BasePage {
                 target.add(vehicleConfirmation);
 
                 // TODO Extract into service object (within a transaction)
-                printCounts();
-
                 Visitor visitor = createVisitor(visitorFormModel);
                 Vehicle vehicle = createVehicle(vehicleFormModel);
                 visitorRepository.save(visitor);
@@ -110,13 +109,9 @@ public class NewRegistrationPage extends BasePage {
                 conventionAttendance.setVehicle(vehicle);
                 conventionAttendanceRepository.save(conventionAttendance);
 
-                printCounts();
+                setResponsePage(RegistrationPage.class);
             }
         });
-    }
-
-    private void printCounts() {
-        System.out.println(String.format("visitors: %d, vehicles: %d, convention attendances: %d", visitorRepository.count(), vehicleRepository.count(), conventionAttendanceRepository.count()));
     }
 
     private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
