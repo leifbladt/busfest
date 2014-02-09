@@ -6,14 +6,20 @@
 <wicket:extend>
     <h3>Neue Anmeldung</h3>
     <form wicket:id="visitor">
-        <!--<div wicket:id="visitorPanel">[visitor input panel]</div>-->
-        <!--<button wicket:id="visitorNext"></button>-->
         <div wicket:id="nameGroup">
             <input type="text" wicket:id="firstName">
             <input type="text" wicket:id="lastName">
         </div>
-        <button wicket:id="visitorSubmit">[weiter]</button>
     </form>
+    <div wicket:id="visitorConfirmation">[visitor confirmation]</div>
+    <button wicket:id="visitorSubmit">[weiter]</button>
+    <form wicket:id="vehicle">
+        <div wicket:id="typeGroup">
+            <input type="text" wicket:id="type">
+        </div>
+    </form>
+    <div wicket:id="vehicleConfirmation">[vehicle confirmation]</div>
+    <button wicket:id="vehicleSubmit">[weiter]</button>
 </wicket:extend>
 
 </body>
