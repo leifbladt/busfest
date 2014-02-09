@@ -3,7 +3,7 @@ package info.bladt.busfest.component;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.ControlGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
-import info.bladt.busfest.model.Vehicle;
+import info.bladt.busfest.persistence.Vehicle;
 import info.bladt.busfest.model.VehicleModel;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.form.TextField;

@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS visitors;
 DROP TABLE IF EXISTS conventions;
+DROP TABLE IF EXISTS vehicles;
 
 CREATE TABLE visitors (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -21,5 +22,13 @@ CREATE TABLE conventions (
   convention_number INT NOT NULL,
   start_date DATETIME NOT NULL,
   end_date DATETIME NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE vehicles (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  type VARCHAR(255),
+  license_plate_number VARCHAR(255),
+  date_of_manufacture DATETIME,
   PRIMARY KEY (id)
 );

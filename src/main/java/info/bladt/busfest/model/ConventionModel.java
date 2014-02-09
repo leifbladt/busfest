@@ -20,7 +20,7 @@ public class ConventionModel extends LoadableDetachableModel<Convention> {
     }
 
     public ConventionModel(Long id) {
-       this();
+        this();
         this.id = id;
     }
 

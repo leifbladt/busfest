@@ -1,17 +1,29 @@
-package info.bladt.busfest.model;
+package info.bladt.busfest.persistence;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
+@Table(name = "vehicles")
+@Entity
 public class Vehicle implements Serializable {
+    // TODO Only month and year of manufacture?
 
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "type")
     private String type;
 
+    @Column(name = "license_plate_number")
     private String licensePlateNumber;
 
+    @Column(name = "date_of_manufacture")
     private Date dateOfManufacture;
 
     public Vehicle() {}
