@@ -4,12 +4,18 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxButt
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
+import info.bladt.busfest.BusfestSession;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
 import info.bladt.busfest.component.VisitorInputPanel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
+import info.bladt.busfest.persistence.ConventionAttendance;
+import info.bladt.busfest.persistence.Vehicle;
+import info.bladt.busfest.persistence.Visitor;
+import info.bladt.busfest.persistence.repository.ConventionAttendanceRepository;
+import info.bladt.busfest.persistence.repository.VehicleRepository;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
@@ -27,11 +33,17 @@ public class NewRegistrationPage extends BasePage {
     @SpringBean
     private VisitorRepository visitorRepository;
 
+    @SpringBean
+    private VehicleRepository vehicleRepository;
+
+    @SpringBean
+    private ConventionAttendanceRepository conventionAttendanceRepository;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
+        final IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
 
         final VisitorForm visitorForm = new VisitorForm("visitor", visitorFormModel);
         visitorForm.setOutputMarkupId(true);
@@ -42,7 +54,7 @@ public class NewRegistrationPage extends BasePage {
         visitorConfirmation.setVisible(false);
         add(visitorConfirmation);
 
-        IModel<VehicleFormModel> vehicleFormModel = Model.of(new VehicleFormModel());
+        final IModel<VehicleFormModel> vehicleFormModel = Model.of(new VehicleFormModel());
 
         final VehicleForm vehicleForm = new VehicleForm("vehicle", vehicleFormModel);
         vehicleForm.setOutputMarkupPlaceholderTag(true);
@@ -84,8 +96,50 @@ public class NewRegistrationPage extends BasePage {
 
                 vehicleConfirmation.setVisible(true);
                 target.add(vehicleConfirmation);
+
+                // TODO Extract into service object (within a transaction)
+                printCounts();
+
+                Visitor visitor = createVisitor(visitorFormModel);
+                Vehicle vehicle = createVehicle(vehicleFormModel);
+                visitorRepository.save(visitor);
+                vehicleRepository.save(vehicle);
+                ConventionAttendance conventionAttendance = new ConventionAttendance();
+                conventionAttendance.setConvention(BusfestSession.get().getActiveConvention().getObject());
+                conventionAttendance.setVisitor(visitor);
+                conventionAttendance.setVehicle(vehicle);
+                conventionAttendanceRepository.save(conventionAttendance);
+
+                printCounts();
             }
         });
+    }
+
+    private void printCounts() {
+        System.out.println(String.format("visitors: %d, vehicles: %d, convention attendances: %d", visitorRepository.count(), vehicleRepository.count(), conventionAttendanceRepository.count()));
+    }
+
+    private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
+        Visitor visitor = new Visitor();
+        VisitorFormModel object = visitorFormModel.getObject();
+        visitor.setFirstName(object.getFirstName());
+        visitor.setLastName(object.getLastName());
+        visitor.setStreet(object.getAddress());
+        visitor.setZipCode(object.getZipCode());
+        visitor.setCity(object.getCity());
+        visitor.setCountry(object.getCountry());
+        visitor.setDateOfBirth(object.getDateOfBirth());
+
+        return visitor;
+    }
+
+    private Vehicle createVehicle(IModel<VehicleFormModel> vehicleFormModel) {
+        Vehicle vehicle = new Vehicle();
+        VehicleFormModel object = vehicleFormModel.getObject();
+        vehicle.setType(object.getType());
+        vehicle.setLicensePlateNumber(object.getLicensePlateNumber());
+
+        return vehicle;
     }
 
     private class VisitorForm extends BootstrapForm<VisitorFormModel> {
