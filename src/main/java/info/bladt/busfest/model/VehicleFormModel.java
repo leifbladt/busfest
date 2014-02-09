@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class VehicleFormModel implements Serializable {
     private String type;
+    private String licensePlateNumber;
 
     public String getType() {
         return type;
@@ -14,5 +15,13 @@ public class VehicleFormModel implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getLicensePlateNumber() {
+        return licensePlateNumber;
+    }
+
+    public void setLicensePlateNumber(String licensePlateNumber) {
+        this.licensePlateNumber = licensePlateNumber;
     }
 }

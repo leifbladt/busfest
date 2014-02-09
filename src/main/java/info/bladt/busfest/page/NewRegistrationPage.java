@@ -3,23 +3,21 @@ package info.bladt.busfest.page;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxButton;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
-import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
+import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
+import info.bladt.busfest.component.VisitorInputPanel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
-
-import java.io.Serializable;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -91,9 +89,11 @@ public class NewRegistrationPage extends BasePage {
     }
 
     private class VisitorForm extends BootstrapForm<VisitorFormModel> {
+        private final IModel<VisitorFormModel> model;
 
-        public VisitorForm(String componentId, IModel<? extends VisitorFormModel> model) {
+        public VisitorForm(String componentId, IModel<VisitorFormModel> model) {
             super(componentId);
+            this.model = model;
             setDefaultModel(new CompoundPropertyModel(model));
             type(FormType.Horizontal);
         }
@@ -102,16 +102,17 @@ public class NewRegistrationPage extends BasePage {
         protected void onInitialize() {
             super.onInitialize();
 
-            FormGroup nameGroup = new FormGroup("nameGroup", Model.of("Vorname / Nachname"));
-            nameGroup.add(new TextField("firstName"));
-            nameGroup.add(new TextField("lastName"));
-            add(nameGroup);
+            VisitorInputPanel visitorInputPanel = new VisitorInputPanel("visitorInput", model);
+            add(visitorInputPanel);
         }
     }
 
     private class VehicleForm extends BootstrapForm {
-        public VehicleForm(String componentId, IModel<? extends VehicleFormModel> model) {
+        private final IModel<VehicleFormModel> model;
+
+        public VehicleForm(String componentId, IModel<VehicleFormModel> model) {
             super(componentId);
+            this.model = model;
             setDefaultModel(new CompoundPropertyModel<Object>(model));
             type(FormType.Horizontal);
         }
@@ -120,9 +121,8 @@ public class NewRegistrationPage extends BasePage {
         protected void onInitialize() {
             super.onInitialize();
 
-            FormGroup typeGroup = new FormGroup("typeGroup", Model.of("Typ"));
-            typeGroup.add(new TextField("type"));
-            add(typeGroup);
+            VehicleInputPanel vehicleInputPanel = new VehicleInputPanel("vehicleInput", model);
+            add(vehicleInputPanel);
         }
     }
 }

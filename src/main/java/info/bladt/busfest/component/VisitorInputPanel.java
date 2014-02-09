@@ -4,7 +4,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
-import info.bladt.busfest.persistence.Visitor;
+import info.bladt.busfest.model.VisitorFormModel;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -16,13 +16,12 @@ import org.apache.wicket.model.Model;
  */
 public class VisitorInputPanel extends Panel {
 
-    public VisitorInputPanel(String id, IModel<Visitor> visitorModel) {
-        super(id, visitorModel);
-        IModel<Visitor> compound = new CompoundPropertyModel<Visitor>(visitorModel);
+    public VisitorInputPanel(String id, IModel<VisitorFormModel> model) {
+        super(id, model);
+        IModel<VisitorFormModel> compound = new CompoundPropertyModel<VisitorFormModel>(model);
 
-        final BootstrapForm<Visitor> form = new BootstrapForm<Visitor>("visitor", compound);
+        final BootstrapForm<VisitorFormModel> form = new BootstrapForm<VisitorFormModel>("visitor", compound);
         form.type(FormType.Horizontal);
-//        form.setDefaultModel(visitorModel);
 
         FormGroup nameGroup = new FormGroup("nameGroup", Model.of("Vorname / Nachname"));
         TextField firstName = new TextField("firstName");
