@@ -1,26 +1,38 @@
-package info.bladt.busfest.model;
+package info.bladt.busfest.persistence;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
+@Table(name = "conventions")
+@Entity
 public class Convention implements Serializable {
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "location")
     private String location;
 
+    @Column(name = "convention_number")
     private int conventionNumber;
 
+    @Column(name = "start_date")
     private Date startDate;
 
+    @Column(name = "end_date")
     private Date endDate;
 
-    // TODO Right type?
-    private Float overnightCostBus;
-
-    private Float overnightCostCaravan;
-
-    private Float dayVisitorCost;
+//    // TODO Right type?
+//    private Float overnightCostBus;
+//
+//    private Float overnightCostCaravan;
+//
+//    private Float dayVisitorCost;
 
     public Convention() {}
 
@@ -67,27 +79,27 @@ public class Convention implements Serializable {
         return String.format("%s 2014", getLocation());
     }
 
-    public Float getOvernightCostBus() {
-        return overnightCostBus;
-    }
-
-    public void setOvernightCostBus(Float overnightCostBus) {
-        this.overnightCostBus = overnightCostBus;
-    }
-
-    public Float getOvernightCostCaravan() {
-        return overnightCostCaravan;
-    }
-
-    public void setOvernightCostCaravan(Float overnightCostCaravan) {
-        this.overnightCostCaravan = overnightCostCaravan;
-    }
-
-    public Float getDayVisitorCost() {
-        return dayVisitorCost;
-    }
-
-    public void setDayVisitorCost(Float dayVisitorCost) {
-        this.dayVisitorCost = dayVisitorCost;
-    }
+//    public Float getOvernightCostBus() {
+//        return overnightCostBus;
+//    }
+//
+//    public void setOvernightCostBus(Float overnightCostBus) {
+//        this.overnightCostBus = overnightCostBus;
+//    }
+//
+//    public Float getOvernightCostCaravan() {
+//        return overnightCostCaravan;
+//    }
+//
+//    public void setOvernightCostCaravan(Float overnightCostCaravan) {
+//        this.overnightCostCaravan = overnightCostCaravan;
+//    }
+//
+//    public Float getDayVisitorCost() {
+//        return dayVisitorCost;
+//    }
+//
+//    public void setDayVisitorCost(Float dayVisitorCost) {
+//        this.dayVisitorCost = dayVisitorCost;
+//    }
 }

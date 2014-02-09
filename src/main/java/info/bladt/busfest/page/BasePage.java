@@ -8,11 +8,13 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarDropDownButton;
 import info.bladt.busfest.BusfestSession;
-import info.bladt.busfest.model.Convention;
+import info.bladt.busfest.model.ConventionModel;
+import info.bladt.busfest.persistence.Convention;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.ArrayList;
@@ -49,10 +51,9 @@ public abstract class BasePage extends WebPage {
             }
         };
 
-        Convention activeConvention = BusfestSession.get().getActiveConvention();
         Navbar navbar = new Navbar("navbar");
         navbar.setPosition(Navbar.Position.STATIC_TOP);
-        navbar.brandName(Model.of(activeConvention.getDisplayName()));
+        navbar.brandName(new PropertyModel<String>(BusfestSession.get().getActiveConvention(), "getDisplayName"));
         navbar.addComponents(
                 new ImmutableNavbarComponent(new NavbarButton<BasePage>(DashboardPage.class, Model.of("Dashboard"))),
                 new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(RegistrationPage.class, Model.of("Anmeldung"))),

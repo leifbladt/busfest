@@ -1,7 +1,10 @@
 package info.bladt.busfest;
 
-import info.bladt.busfest.model.Convention;
+import info.bladt.busfest.model.ConventionModel;
+import info.bladt.busfest.persistence.Convention;
 import org.apache.wicket.Session;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
@@ -19,10 +22,8 @@ public class BusfestSession extends WebSession {
         return (BusfestSession) Session.get();
     }
 
-    public Convention getActiveConvention() {
-        if (activeConvention == null) {
-            activeConvention = new Convention("Kirchzarten", 11, null, null);
-        }
-        return activeConvention;
+    public ConventionModel getActiveConvention() {
+        // TODO Determine active convention (per Session/User/Global)
+        return new ConventionModel(7L);
     }
 }
