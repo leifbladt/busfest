@@ -1,6 +1,7 @@
 package info.bladt.busfest.page;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxButton;
+import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
@@ -91,13 +92,17 @@ public class NewRegistrationPage extends BasePage {
                 VehicleFormModel modelObject = (VehicleFormModel)form.getModelObject();
                 System.out.println("onSubmitAgain!!! " + modelObject.getType());
 
-                // TODO Not really needed on success, on error?
                 vehicleForm.setVisible(false);
                 target.add(vehicleForm);
 
                 vehicleConfirmation.setVisible(true);
                 target.add(vehicleConfirmation);
+            }
+        });
 
+        add(new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
                 // TODO Extract into service object (within a transaction)
                 Visitor visitor = createVisitor(visitorFormModel);
                 Vehicle vehicle = createVehicle(vehicleFormModel);
