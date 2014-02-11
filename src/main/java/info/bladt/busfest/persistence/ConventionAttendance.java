@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Entity
 public class ConventionAttendance implements Serializable {
     // TODO Add created_at
+    // TODO Save calculated costs?
 
     @Column(name = "id")
     @Id

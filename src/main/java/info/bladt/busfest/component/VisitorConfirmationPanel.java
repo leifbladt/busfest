@@ -10,6 +10,9 @@ import org.apache.wicket.model.PropertyModel;
  * Created by leif on 09.02.14.
  */
 public class VisitorConfirmationPanel extends Panel {
+
+    // TODO Add edit action
+
     private final IModel<? extends VisitorFormModel> model;
 
     public VisitorConfirmationPanel(String id, IModel<? extends VisitorFormModel> model) {

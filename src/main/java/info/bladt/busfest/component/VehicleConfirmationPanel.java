@@ -10,6 +10,9 @@ import org.apache.wicket.model.PropertyModel;
  * Created by leif on 09.02.14.
  */
 public class VehicleConfirmationPanel extends Panel {
+
+    // TODO Add edit action
+
     private final IModel<? extends VehicleFormModel> model;
 
     public VehicleConfirmationPanel(String id, IModel<? extends VehicleFormModel> model) {
