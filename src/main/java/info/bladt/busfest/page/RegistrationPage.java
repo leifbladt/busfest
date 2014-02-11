@@ -19,7 +19,7 @@ import java.util.List;
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
 @MountPath("/registration")
-public class RegistrationPage extends BasePage {
+public class RegistrationPage extends AuthenticatedBasePage {
     @SpringBean
     ConventionAttendanceRepository conventionAttendanceRepository;
 

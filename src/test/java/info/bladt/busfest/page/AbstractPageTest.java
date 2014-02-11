@@ -1,6 +1,7 @@
 package info.bladt.busfest.page;
 
 import info.bladt.busfest.BusfestApplication;
+import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.springframework.web.context.WebApplicationContext;
@@ -17,6 +18,13 @@ public class AbstractPageTest {
     @Before
     public void setUp() {
         tester = new WicketTester(new BusfestApplication() {
+
+            @Override
+            public void init() {
+                super.init();
+                getSecuritySettings().setAuthorizationStrategy(IAuthorizationStrategy.ALLOW_ALL);
+            }
+
             @Override
             public ServletContext getServletContext() {
                 ServletContext servletContext = super.getServletContext();

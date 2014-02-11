@@ -5,14 +5,16 @@ import de.agilecoders.wicket.core.settings.BootstrapSettings;
 import de.agilecoders.wicket.less.BootstrapLess;
 import info.bladt.busfest.page.DashboardPage;
 import org.apache.wicket.Session;
+import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.wicketstuff.annotation.scan.AnnotatedMountScanner;
 
-public class BusfestApplication extends WebApplication {
+public class BusfestApplication extends AuthenticatedWebApplication {
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -48,5 +50,15 @@ public class BusfestApplication extends WebApplication {
     @Override
     public Session newSession(Request request, Response response) {
         return new BusfestSession(request);
+    }
+
+    @Override
+    protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
+        return BusfestSession.class;
+    }
+
+    @Override
+    protected Class<? extends WebPage> getSignInPageClass() {
+        return SignInPage.class;
     }
 }

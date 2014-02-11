@@ -30,7 +30,7 @@ import org.wicketstuff.annotation.mount.MountPath;
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
 @MountPath("/registration/new")
-public class NewRegistrationPage extends BasePage {
+public class NewRegistrationPage extends AuthenticatedBasePage {
     @SpringBean
     private VisitorRepository visitorRepository;
 
