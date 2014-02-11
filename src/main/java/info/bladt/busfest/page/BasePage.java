@@ -43,7 +43,7 @@ public abstract class BasePage extends WebPage {
             @Override
             protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
                 ArrayList<AbstractLink> links = new ArrayList<AbstractLink>();
-                links.add(new MenuBookmarkablePageLink<PayoffPage>(PayoffPage.class, Model.of("Treffen verwalten")));
+                links.add(new MenuBookmarkablePageLink<ManageConventionsPage>(ManageConventionsPage.class, Model.of("Treffen verwalten")));
                 links.add(new MenuDivider());
                 links.add(new MenuBookmarkablePageLink<SignOutPage>(SignOutPage.class, Model.of("Abmelden")));
                 return links;
@@ -52,7 +52,7 @@ public abstract class BasePage extends WebPage {
 
         Navbar navbar = new Navbar("navbar");
         navbar.setPosition(Navbar.Position.STATIC_TOP);
-        navbar.brandName(new PropertyModel<String>(BusfestSession.get().getActiveConvention(), "getDisplayName"));
+        navbar.brandName(new PropertyModel<String>(BusfestSession.get().getActiveConvention(), "displayName"));
         navbar.addComponents(
                 new ImmutableNavbarComponent(new NavbarButton<BasePage>(DashboardPage.class, Model.of("Dashboard"))),
                 new ImmutableNavbarComponent(new NavbarButton<DashboardPage>(RegistrationPage.class, Model.of("Anmeldung"))),
