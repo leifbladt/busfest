@@ -1,14 +1,22 @@
 <html>
 <body>
 <wicket:panel>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Pers&ouml;nliche Daten
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Pers&ouml;nliche Daten
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <span wicket:id="firstName">[firstName]</span> <span wicket:id="lastName">[lastName]</span><br>
+                    <span wicket:id="address">[address]</span><br>
+                    <span wicket:id="zipCode">[zipCode]</span> <span wicket:id="city">[city]</span><br>
+                    <span wicket:id="country">[country]</span>
                 </div>
-                <div class="panel-body">
-                    <span wicket:id="label"></span>
+                <div class="col-md-6">
+                    <span wicket:id="dateOfBirth">[firstName]</span><br>
+                    <span wicket:id="telephoneNumber">[telephoneNumber]</span><br>
+                    <span wicket:id="emailAddress">[emailAddress]</span>
                 </div>
             </div>
         </div>

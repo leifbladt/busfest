@@ -21,6 +21,7 @@ public class VehicleConfirmationPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        add(new Label("label", new PropertyModel(model, "type")));
+        add(new Label("type", new PropertyModel(model, "type")));
+        add(new Label("licensePlateNumber", new PropertyModel(model, "licensePlateNumber")));
     }
 }

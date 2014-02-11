@@ -5,16 +5,19 @@
 
 <wicket:extend>
     <h3>Neue Anmeldung</h3>
+    <div class="row">
+        <div wicket:id="visitorConfirmation">[visitor confirmation]</div>
+        <div wicket:id="vehicleConfirmation">[vehicle confirmation]</div>
+    </div>
+
     <form wicket:id="visitor">
         <div wicket:id="visitorInput"></div>
     </form>
-    <div wicket:id="visitorConfirmation">[visitor confirmation]</div>
     <button wicket:id="visitorSubmit">[weiter]</button>
 
     <form wicket:id="vehicle">
         <div wicket:id="vehicleInput"></div>
     </form>
-    <div wicket:id="vehicleConfirmation">[vehicle confirmation]</div>
     <button wicket:id="vehicleSubmit">[weiter]</button>
     <a wicket:id="finalConfirmation">[weiter]</a>
 </wicket:extend>
