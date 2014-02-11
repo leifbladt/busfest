@@ -5,8 +5,4 @@
 
   <import resource="classpath*:in-memory-database.xml" />
   <import resource="classpath*:in-memory-datasource.xml" />
-
-  <!--<bean id="log4j" class="com.oneandone.ebusiness.commons.log.Log4jInstantiation">-->
-    <!--<constructor-arg type="java.lang.String" value="log4j.${app.mode:development}.xml"/>-->
-  <!--</bean>-->
 </beans>
