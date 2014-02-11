@@ -4,6 +4,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxButt
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.BusfestSession;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
@@ -31,6 +32,9 @@ import org.wicketstuff.annotation.mount.MountPath;
  */
 @MountPath("/registration/new")
 public class NewRegistrationPage extends AuthenticatedBasePage {
+
+    // TODO Workflow for returning/pre-registered visitors
+
     @SpringBean
     private VisitorRepository visitorRepository;
 
@@ -151,7 +155,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             super(componentId);
             this.model = model;
             setDefaultModel(new CompoundPropertyModel(model));
-            type(FormType.Horizontal);
+            add(new FormBehavior(FormType.Horizontal));
         }
 
         @Override
@@ -169,8 +173,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         public VehicleForm(String componentId, IModel<VehicleFormModel> model) {
             super(componentId);
             this.model = model;
-            setDefaultModel(new CompoundPropertyModel<Object>(model));
-            type(FormType.Horizontal);
+            setDefaultModel(new CompoundPropertyModel(model));
+            add(new FormBehavior(FormType.Horizontal));
         }
 
         @Override

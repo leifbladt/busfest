@@ -1,6 +1,7 @@
 package info.bladt.busfest.component;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
@@ -22,7 +23,7 @@ public class VisitorInputPanel extends Panel {
         IModel<VisitorFormModel> compound = new CompoundPropertyModel<VisitorFormModel>(model);
 
         final BootstrapForm<VisitorFormModel> form = new BootstrapForm<VisitorFormModel>("visitor", compound);
-        form.type(FormType.Horizontal);
+        form.add(new FormBehavior(FormType.Horizontal));
 
         FormGroup nameGroup = new FormGroup("nameGroup", Model.of("Vorname / Nachname"));
         TextField firstName = new TextField("firstName");
