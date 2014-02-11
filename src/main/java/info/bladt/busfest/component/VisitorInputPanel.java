@@ -5,6 +5,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
 import info.bladt.busfest.model.VisitorFormModel;
+import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -51,6 +52,16 @@ public class VisitorInputPanel extends Panel {
         DateTextField dateOfBirth = new DateTextField("dateOfBirth");
         dateOfBirthGroup.add(dateOfBirth);
         form.add(dateOfBirthGroup);
+
+        FormGroup telephoneNumberGroup = new FormGroup("telephoneNumberGroup", Model.of("Telefon"));
+        TextField telephoneNumber = new TextField("telephoneNumber");
+        telephoneNumberGroup.add(telephoneNumber);
+        form.add(telephoneNumberGroup);
+
+        FormGroup emailAddressGroup = new FormGroup("emailAddressGroup", Model.of("E-Mail"));
+        EmailTextField emailAddress = new EmailTextField("emailAddress");
+        emailAddressGroup.add(emailAddress);
+        form.add(emailAddressGroup);
 
         add(form);
     }

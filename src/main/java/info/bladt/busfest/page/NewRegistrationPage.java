@@ -129,6 +129,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         visitor.setCity(object.getCity());
         visitor.setCountry(object.getCountry());
         visitor.setDateOfBirth(object.getDateOfBirth());
+        visitor.setTelephoneNumber(object.getTelephoneNumber());
+        visitor.setEmailAddress(object.getEmailAddress());
 
         return visitor;
     }

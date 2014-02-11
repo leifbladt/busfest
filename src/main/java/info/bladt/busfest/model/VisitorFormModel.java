@@ -15,6 +15,8 @@ public class VisitorFormModel implements Serializable {
     private String city;
     private String country;
     private Date dateOfBirth;
+    private String telephoneNumber;
+    private String emailAddress;
 
     public String getFirstName() {
         return firstName;
@@ -70,6 +72,22 @@ public class VisitorFormModel implements Serializable {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }
 
