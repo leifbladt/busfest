@@ -7,10 +7,13 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.BusfestSession;
+import info.bladt.busfest.component.OvernightDataConfirmationPanel;
+import info.bladt.busfest.component.OvernightDataInputPanel;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
 import info.bladt.busfest.component.VisitorInputPanel;
+import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.ConventionAttendance;
@@ -71,13 +74,24 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         vehicleConfirmation.setVisible(false);
         add(vehicleConfirmation);
 
+        final IModel<OvernightDataFormModel> overnightDataFormModel = Model.of(new OvernightDataFormModel());
+
+        final OvernightDataForm overnightDataForm = new OvernightDataForm("overnightData", overnightDataFormModel);
+        overnightDataForm.setOutputMarkupPlaceholderTag(true);
+        overnightDataForm.setVisible(false);
+        add(overnightDataForm);
+
+        final OvernightDataConfirmationPanel overnightDataConfirmationPanel = new OvernightDataConfirmationPanel("overnightDataConfirmation", overnightDataFormModel);
+        overnightDataConfirmationPanel.setOutputMarkupPlaceholderTag(true);
+        overnightDataConfirmationPanel.setVisible(false);
+        add(overnightDataConfirmationPanel);
+
         add(new BootstrapAjaxButton("visitorSubmit", Model.of("weiter"), visitorForm, Buttons.Type.Primary) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 VisitorFormModel modelObject = (VisitorFormModel) form.getModelObject();
 
-                System.out.println("onSubmit!!! " + modelObject.getFirstName());
                 visitorForm.setVisible(false);
                 target.add(visitorForm);
 
@@ -94,13 +108,28 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 VehicleFormModel modelObject = (VehicleFormModel)form.getModelObject();
-                System.out.println("onSubmitAgain!!! " + modelObject.getType());
 
                 vehicleForm.setVisible(false);
                 target.add(vehicleForm);
 
                 vehicleConfirmation.setVisible(true);
                 target.add(vehicleConfirmation);
+
+                overnightDataForm.setVisible(true);
+                target.add(overnightDataForm);
+            }
+        });
+
+        add(new BootstrapAjaxButton("overnightDataSubmit", Model.of("weiter"), overnightDataForm, Buttons.Type.Primary) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+
+                overnightDataForm.setVisible(false);
+                target.add(overnightDataForm);
+
+                overnightDataConfirmationPanel.setVisible(true);
+                target.add(overnightDataConfirmationPanel);
             }
         });
 
@@ -183,6 +212,25 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VehicleInputPanel vehicleInputPanel = new VehicleInputPanel("vehicleInput", model);
             add(vehicleInputPanel);
+        }
+    }
+
+    private class OvernightDataForm extends BootstrapForm {
+        private final IModel<OvernightDataFormModel> model;
+
+        public OvernightDataForm(String componentId, IModel<OvernightDataFormModel> model) {
+            super(componentId, model);
+            this.model = model;
+            setDefaultModel(new CompoundPropertyModel(model));
+            add(new FormBehavior(FormType.Horizontal));
+        }
+
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
+            OvernightDataInputPanel overnightDataInputPanel = new OvernightDataInputPanel("overnightDataInput", model);
+            add(overnightDataInputPanel);
         }
     }
 }

@@ -1,6 +1,7 @@
 package info.bladt.busfest.component;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
+import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.VehicleFormModel;
@@ -19,7 +20,7 @@ public class VehicleInputPanel extends Panel {
         IModel<VehicleFormModel> compound = new CompoundPropertyModel<VehicleFormModel>(model);
 
         final BootstrapForm<VehicleFormModel> form = new BootstrapForm<VehicleFormModel>("vehicle", compound);
-        form.type(FormType.Horizontal);
+        form.add(new FormBehavior(FormType.Horizontal));
 
         FormGroup typeGroup = new FormGroup("typeGroup", Model.of("Typ"));
         TextField type = new TextField("type");
