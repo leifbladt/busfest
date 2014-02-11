@@ -8,8 +8,6 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarDropDownButton;
 import info.bladt.busfest.BusfestSession;
-import info.bladt.busfest.model.ConventionModel;
-import info.bladt.busfest.persistence.Convention;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
@@ -47,6 +45,7 @@ public abstract class BasePage extends WebPage {
                 ArrayList<AbstractLink> links = new ArrayList<AbstractLink>();
                 links.add(new MenuBookmarkablePageLink<PayoffPage>(PayoffPage.class, Model.of("Treffen verwalten")));
                 links.add(new MenuDivider());
+                links.add(new MenuBookmarkablePageLink<SignOutPage>(SignOutPage.class, Model.of("Abmelden")));
                 return links;
             }
         };
