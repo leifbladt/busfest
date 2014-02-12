@@ -1,1 +1,1 @@
-INSERT INTO conventions (id, location, convention_number, start_date, end_date, created_at, updated_at) VALUES (7, 'Kirchzarten', 11, '2014-04-04', '2014-04-06', now(), now());
+INSERT INTO conventions (id, location, convention_number, starts_on, ends_on, created_at, updated_at) VALUES (7, 'Kirchzarten', 11, '2014-04-04', '2014-04-06', now(), now());

@@ -28,8 +28,8 @@ public class ManageConventionsPage extends AuthenticatedBasePage {
         List<IColumn> columns = new ArrayList<IColumn>();
         columns.add(new PropertyColumn(Model.of("Ort"), "location"));
         columns.add(new PropertyColumn(Model.of("Treffen Nr."), "conventionNumber"));
-        columns.add(new PropertyColumn(Model.of("von"), "startDate"));
-        columns.add(new PropertyColumn(Model.of("bis"), "endDate"));
+        columns.add(new PropertyColumn(Model.of("von"), "startsOn"));
+        columns.add(new PropertyColumn(Model.of("bis"), "endsOn"));
         DefaultDataTable conventions = new DefaultDataTable("conventions", columns, new ConventionProvider(), 5);
         conventions.add(new TableBehavior());
         add(conventions);

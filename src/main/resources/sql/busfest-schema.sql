@@ -7,8 +7,8 @@ CREATE TABLE conventions (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
   location VARCHAR(255) NOT NULL,
   convention_number INT NOT NULL,
-  start_date DATETIME NOT NULL,
-  end_date DATETIME NOT NULL,
+  starts_on DATETIME NOT NULL,
+  ends_on DATETIME NOT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)

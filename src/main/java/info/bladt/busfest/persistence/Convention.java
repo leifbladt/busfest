@@ -18,12 +18,11 @@ public class Convention extends AbstractEntity {
     @Column(name = "convention_number")
     private int conventionNumber;
 
-    // TODO Rename to startsOn?
-    @Column(name = "start_date")
-    private Date startDate;
+    @Column(name = "starts_on")
+    private Date startsOn;
 
-    @Column(name = "end_date")
-    private Date endDate;
+    @Column(name = "ends_on")
+    private Date endsOn;
 
 //    // TODO Right type?
 //    private Float overnightCostBus;
@@ -34,11 +33,11 @@ public class Convention extends AbstractEntity {
 
     public Convention() {}
 
-    public Convention(String location, int conventionNumber, Date startDate, Date endDate) {
+    public Convention(String location, int conventionNumber, Date startsOn, Date endsOn) {
         this.location = location;
         this.conventionNumber = conventionNumber;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startsOn = startsOn;
+        this.endsOn = endsOn;
     }
 
     public String getLocation() {
@@ -57,20 +56,20 @@ public class Convention extends AbstractEntity {
         this.conventionNumber = conventionNumber;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartsOn() {
+        return startsOn;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartsOn(Date startsOn) {
+        this.startsOn = startsOn;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndsOn() {
+        return endsOn;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndsOn(Date endsOn) {
+        this.endsOn = endsOn;
     }
 
     public String getDisplayName() {
