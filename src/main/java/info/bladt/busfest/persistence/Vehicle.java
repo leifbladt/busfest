@@ -1,7 +1,8 @@
 package info.bladt.busfest.persistence;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -9,13 +10,8 @@ import java.util.Date;
  */
 @Table(name = "vehicles")
 @Entity
-public class Vehicle implements Serializable {
+public class Vehicle extends AbstractEntity {
     // TODO Only month and year of manufacture?
-
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @Column(name = "type")
     private String type;

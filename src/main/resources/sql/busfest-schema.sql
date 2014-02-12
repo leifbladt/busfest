@@ -9,6 +9,8 @@ CREATE TABLE conventions (
   convention_number INT NOT NULL,
   start_date DATETIME NOT NULL,
   end_date DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -23,6 +25,8 @@ CREATE TABLE visitors (
   date_of_birth DATETIME,
   telephone_number VARCHAR(255),
   email_address VARCHAR(255),
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -31,6 +35,8 @@ CREATE TABLE vehicles (
   type VARCHAR(255),
   license_plate_number VARCHAR(255),
   date_of_manufacture DATETIME,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -39,6 +45,8 @@ CREATE TABLE convention_attendances (
   convention_id BIGINT(20) NOT NULL,
   visitor_id BIGINT(20) NOT NULL,
   vehicle_id BIGINT(20),
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
   CONSTRAINT FK_convention_attendances_convention_id FOREIGN KEY (convention_id) REFERENCES conventions (id),
   CONSTRAINT FK_convention_attendances_visitor_id FOREIGN KEY (visitor_id) REFERENCES visitors (id),
   CONSTRAINT FK_convention_attendances_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),

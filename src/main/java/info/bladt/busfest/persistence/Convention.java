@@ -1,7 +1,8 @@
 package info.bladt.busfest.persistence;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -9,11 +10,7 @@ import java.util.Date;
  */
 @Table(name = "conventions")
 @Entity
-public class Convention implements Serializable {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Convention extends AbstractEntity {
 
     @Column(name = "location")
     private String location;
@@ -21,6 +18,7 @@ public class Convention implements Serializable {
     @Column(name = "convention_number")
     private int conventionNumber;
 
+    // TODO Rename to startsOn?
     @Column(name = "start_date")
     private Date startDate;
 

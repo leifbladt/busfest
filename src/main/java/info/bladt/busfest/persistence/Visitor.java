@@ -2,11 +2,7 @@ package info.bladt.busfest.persistence;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,13 +10,8 @@ import java.util.Date;
  */
 @Table(name = "visitors")
 @Entity
-public class Visitor implements Serializable {
+public class Visitor extends AbstractEntity {
     // TODO Club-IG
-
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @Column(name = "first_name")
     private String firstName;

@@ -1,21 +1,17 @@
 package info.bladt.busfest.persistence;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Created by leif on 09.02.14.
  */
 @Table(name = "convention_attendances")
 @Entity
-public class ConventionAttendance implements Serializable {
-    // TODO Add created_at
+public class ConventionAttendance extends AbstractEntity {
     // TODO Save calculated costs?
-
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "convention_id", nullable = false)
