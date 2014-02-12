@@ -4,6 +4,7 @@ import info.bladt.busfest.model.VisitorFormModel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -23,6 +24,11 @@ public class VisitorConfirmationPanel extends Panel {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+
+        add(new Label("addressLabel", Model.of("Anschrift")));
+        add(new Label("dateOfBirthLabel", Model.of("Geburtstag")));
+        add(new Label("telephoneNumberLabel", Model.of("Telefon")));
+        add(new Label("emailAddressLabel", Model.of("E-Mail")));
 
         add(new Label("firstName", new PropertyModel(model, "firstName")));
         add(new Label("lastName", new PropertyModel(model, "lastName")));

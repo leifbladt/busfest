@@ -6,13 +6,16 @@
             Pers&ouml;nliche Daten
         </div>
         <div class="panel-body">
+            <span wicket:id="addressLabel" class="col-md-4"></span>
+            <span class="col-md-8">
                 <span wicket:id="firstName">[firstName]</span> <span wicket:id="lastName">[lastName]</span><br>
                 <span wicket:id="address">[address]</span><br>
                 <span wicket:id="zipCode">[zipCode]</span> <span wicket:id="city">[city]</span><br>
                 <span wicket:id="country">[country]</span>
-                <span wicket:id="dateOfBirth">[firstName]</span><br>
-                <span wicket:id="telephoneNumber">[telephoneNumber]</span><br>
-                <span wicket:id="emailAddress">[emailAddress]</span>
+            </span>
+            <span wicket:id="dateOfBirthLabel" class="col-md-4"></span><span wicket:id="dateOfBirth" class="col-md-8">[dateOfBirth]</span><br>
+            <span wicket:id="telephoneNumberLabel" class="col-md-4"></span><span wicket:id="telephoneNumber" class="col-md-8">[telephoneNumber]</span><br>
+            <span wicket:id="emailAddressLabel" class="col-md-4"></span><span wicket:id="emailAddress" class="col-md-8">[emailAddress]</span>
         </div>
     </div>
 </wicket:panel>
