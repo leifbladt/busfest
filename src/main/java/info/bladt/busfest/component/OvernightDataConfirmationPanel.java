@@ -26,9 +26,9 @@ public class OvernightDataConfirmationPanel extends Panel {
         super.onInitialize();
 
         add(new Label("overnightCountLabel", Model.of("Übernachtungen")));
-        add(new Label("fellowPassengerCountLabel", Model.of("Mitreisende")));
+        add(new Label("fellowPassengersLabel", Model.of("Mitreisende")));
 
         add(new Label("overnightCount", new PropertyModel(model, "overnightCount")));
-        add(new Label("fellowPassengerCount", new PropertyModel(model, "fellowPassengerCount")));
+        add(new Label("fellowPassengers", new PropertyModel(model, "fellowPassengers")));
     }
 }

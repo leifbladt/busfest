@@ -12,7 +12,7 @@ public class OvernightDataFormModel implements Serializable {
 
     private Boolean caravan;
 
-    private Integer fellowPassengerCount;
+    private int fellowPassengers;
 
     public Boolean getOvernightVisitor() {
         return overnightVisitor;
@@ -38,11 +38,11 @@ public class OvernightDataFormModel implements Serializable {
         this.caravan = caravan;
     }
 
-    public Integer getFellowPassengerCount() {
-        return fellowPassengerCount;
+    public int getFellowPassengers() {
+        return fellowPassengers;
     }
 
-    public void setFellowPassengerCount(Integer fellowPassengerCount) {
-        this.fellowPassengerCount = fellowPassengerCount;
+    public void setFellowPassengers(int fellowPassengers) {
+        this.fellowPassengers = fellowPassengers;
     }
 }

@@ -17,9 +17,11 @@ import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.ConventionAttendance;
+import info.bladt.busfest.persistence.OvernightData;
 import info.bladt.busfest.persistence.Vehicle;
 import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.persistence.repository.ConventionAttendanceRepository;
+import info.bladt.busfest.persistence.repository.OvernightDataRepository;
 import info.bladt.busfest.persistence.repository.VehicleRepository;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -43,6 +45,9 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
     @SpringBean
     private VehicleRepository vehicleRepository;
+
+    @SpringBean
+    private OvernightDataRepository overnightDataRepository;
 
     @SpringBean
     private ConventionAttendanceRepository conventionAttendanceRepository;
@@ -137,14 +142,18 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 // TODO Extract into service object (within a transaction)
-                Visitor visitor = createVisitor(visitorFormModel);
-                Vehicle vehicle = createVehicle(vehicleFormModel);
-                visitorRepository.save(visitor);
-                vehicleRepository.save(vehicle);
+                Visitor visitor = visitorRepository.save(createVisitor(visitorFormModel));
+                Vehicle vehicle = vehicleRepository.save(createVehicle(vehicleFormModel));
+
                 ConventionAttendance conventionAttendance = new ConventionAttendance();
                 conventionAttendance.setConvention(BusfestSession.get().getActiveConvention().getObject());
                 conventionAttendance.setVisitor(visitor);
                 conventionAttendance.setVehicle(vehicle);
+
+                // TODO Check for overnight stay
+                OvernightData overnightData = overnightDataRepository.save(createOvernightData(overnightDataFormModel));
+                conventionAttendance.setOvernightData(overnightData);
+
                 conventionAttendanceRepository.save(conventionAttendance);
 
                 setResponsePage(RegistrationPage.class);
@@ -175,6 +184,14 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         vehicle.setLicensePlateNumber(object.getLicensePlateNumber());
 
         return vehicle;
+    }
+
+    private OvernightData createOvernightData(IModel<OvernightDataFormModel> overnightDataFormModel) {
+        OvernightData overnightData = new OvernightData();
+        OvernightDataFormModel object = overnightDataFormModel.getObject();
+        overnightData.setFellowPassengers(object.getFellowPassengers());
+
+        return overnightData;
     }
 
     private class VisitorForm extends BootstrapForm<VisitorFormModel> {

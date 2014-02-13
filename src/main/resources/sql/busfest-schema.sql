@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS convention_attendances;
+DROP TABLE IF EXISTS overnight_data;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS visitors;
 DROP TABLE IF EXISTS conventions;
@@ -40,11 +41,20 @@ CREATE TABLE vehicles (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE overnight_data (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  fellow_passengers INT DEFAULT 0,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE convention_attendances (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
   convention_id BIGINT(20) NOT NULL,
   visitor_id BIGINT(20) NOT NULL,
-  vehicle_id BIGINT(20),
+  vehicle_id BIGINT(20) DEFAULT NULL,
+  overnight_data_id BIGINT(20) DEFAULT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   CONSTRAINT FK_convention_attendances_convention_id FOREIGN KEY (convention_id) REFERENCES conventions (id),

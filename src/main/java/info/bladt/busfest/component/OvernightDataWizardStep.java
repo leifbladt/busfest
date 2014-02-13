@@ -3,7 +3,7 @@ package info.bladt.busfest.component;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
-import info.bladt.busfest.model.OvernightData;
+import info.bladt.busfest.persistence.OvernightData;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;

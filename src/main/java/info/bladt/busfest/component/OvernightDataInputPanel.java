@@ -27,8 +27,8 @@ public class OvernightDataInputPanel extends Panel {
         overnightCountGroup.add(overnightCount);
         form.add(overnightCountGroup);
 
-        FormGroup fellowPassengerCountGroup = new FormGroup("fellowPassengerCountGroup", Model.of("Anzahl Mitreisende"));
-        NumberTextField fellowPassengerCount = new NumberTextField("fellowPassengerCount");
+        FormGroup fellowPassengerCountGroup = new FormGroup("fellowPassengersGroup", Model.of("Anzahl Mitreisende"));
+        NumberTextField fellowPassengerCount = new NumberTextField("fellowPassengers");
         fellowPassengerCountGroup.add(fellowPassengerCount);
         form.add(fellowPassengerCountGroup);
 

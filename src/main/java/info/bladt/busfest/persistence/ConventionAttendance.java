@@ -25,6 +25,10 @@ public class ConventionAttendance extends AbstractEntity {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
+    @ManyToOne
+    @JoinColumn(name = "overnight_data_id")
+    private OvernightData overnightData;
+
     public ConventionAttendance() {}
 
     public ConventionAttendance(Convention convention, Visitor visitor, Vehicle vehicle) {
@@ -55,5 +59,13 @@ public class ConventionAttendance extends AbstractEntity {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public OvernightData getOvernightData() {
+        return overnightData;
+    }
+
+    public void setOvernightData(OvernightData overnightData) {
+        this.overnightData = overnightData;
     }
 }
