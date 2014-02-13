@@ -22,12 +22,12 @@ public class OvernightDataInputPanel extends Panel {
         final BootstrapForm<OvernightDataFormModel> form = new BootstrapForm<OvernightDataFormModel>("overnightData", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
-        FormGroup overnightCountGroup = new FormGroup("overnightCountGroup", Model.of("Anzahl Übernachtungen"));
+        FormGroup overnightCountGroup = new CustomFormGroup("overnightCountGroup", Model.of("Anzahl Übernachtungen"));
         NumberTextField overnightCount = new NumberTextField("overnightCount");
         overnightCountGroup.add(overnightCount);
         form.add(overnightCountGroup);
 
-        FormGroup fellowPassengerCountGroup = new FormGroup("fellowPassengersGroup", Model.of("Anzahl Mitreisende"));
+        FormGroup fellowPassengerCountGroup = new CustomFormGroup("fellowPassengersGroup", Model.of("Anzahl Mitreisende"));
         NumberTextField fellowPassengerCount = new NumberTextField("fellowPassengers");
         fellowPassengerCountGroup.add(fellowPassengerCount);
         form.add(fellowPassengerCountGroup);

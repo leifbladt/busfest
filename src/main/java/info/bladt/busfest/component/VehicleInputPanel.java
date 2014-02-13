@@ -22,12 +22,12 @@ public class VehicleInputPanel extends Panel {
         final BootstrapForm<VehicleFormModel> form = new BootstrapForm<VehicleFormModel>("vehicle", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
-        FormGroup typeGroup = new FormGroup("typeGroup", Model.of("Typ"));
+        FormGroup typeGroup = new CustomFormGroup("typeGroup", Model.of("Typ"));
         TextField type = new TextField("type");
         typeGroup.add(type);
         form.add(typeGroup);
 
-        FormGroup licensePlateNumberGroup = new FormGroup("licensePlateNumberGroup", Model.of("Nummernschild"));
+        FormGroup licensePlateNumberGroup = new CustomFormGroup("licensePlateNumberGroup", Model.of("Nummernschild"));
         TextField licensePlateNumber = new TextField("licensePlateNumber");
         licensePlateNumberGroup.add(licensePlateNumber);
         form.add(licensePlateNumberGroup);
