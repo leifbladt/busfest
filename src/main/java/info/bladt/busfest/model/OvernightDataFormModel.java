@@ -1,14 +1,19 @@
 package info.bladt.busfest.model;
 
+import info.bladt.busfest.BusfestSession;
+import info.bladt.busfest.service.ConventionAttendanceService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.Serializable;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
 public class OvernightDataFormModel implements Serializable {
-    private Boolean overnightVisitor;
 
-    private Integer overnightCount;
+    private Boolean overnightVisitor = true;
+
+    private int overnightCount;
 
     private Boolean caravan;
 
@@ -22,11 +27,11 @@ public class OvernightDataFormModel implements Serializable {
         this.overnightVisitor = overnightVisitor;
     }
 
-    public Integer getOvernightCount() {
+    public int getOvernightCount() {
         return overnightCount;
     }
 
-    public void setOvernightCount(Integer overnightCount) {
+    public void setOvernightCount(int overnightCount) {
         this.overnightCount = overnightCount;
     }
 
@@ -44,5 +49,16 @@ public class OvernightDataFormModel implements Serializable {
 
     public void setFellowPassengers(int fellowPassengers) {
         this.fellowPassengers = fellowPassengers;
+    }
+
+    public int getTotalCosts() {
+        ConventionModel activeConvention = BusfestSession.get().getActiveConvention();
+
+        // TODO Caravan
+        if (overnightVisitor != null && overnightVisitor) {
+            return overnightCount * activeConvention.getObject().getOvernightCostBus();
+        } else {
+            return activeConvention.getObject().getDayVisitorCost();
+        }
     }
 }

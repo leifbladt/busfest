@@ -24,20 +24,26 @@ public class Convention extends AbstractEntity {
     @Column(name = "ends_on")
     private Date endsOn;
 
-//    // TODO Right type?
-//    private Float overnightCostBus;
-//
-//    private Float overnightCostCaravan;
-//
-//    private Float dayVisitorCost;
+    // TODO Switch to joda-money
+    @Column(name = "overnight_cost_bus")
+    private int overnightCostBus;
+
+    @Column(name = "overnight_cost_caravan")
+    private int overnightCostCaravan;
+
+    @Column(name = "day_visitor_cost")
+    private int dayVisitorCost;
 
     public Convention() {}
 
-    public Convention(String location, int conventionNumber, Date startsOn, Date endsOn) {
+    public Convention(String location, int conventionNumber, Date startsOn, Date endsOn, int overnightCostBus, int overnightCostCaravan, int dayVisitorCost) {
         this.location = location;
         this.conventionNumber = conventionNumber;
         this.startsOn = startsOn;
         this.endsOn = endsOn;
+        this.overnightCostBus = overnightCostBus;
+        this.overnightCostCaravan = overnightCostCaravan;
+        this.dayVisitorCost = dayVisitorCost;
     }
 
     public String getLocation() {
@@ -76,27 +82,27 @@ public class Convention extends AbstractEntity {
         return String.format("%s 2014", getLocation());
     }
 
-//    public Float getOvernightCostBus() {
-//        return overnightCostBus;
-//    }
-//
-//    public void setOvernightCostBus(Float overnightCostBus) {
-//        this.overnightCostBus = overnightCostBus;
-//    }
-//
-//    public Float getOvernightCostCaravan() {
-//        return overnightCostCaravan;
-//    }
-//
-//    public void setOvernightCostCaravan(Float overnightCostCaravan) {
-//        this.overnightCostCaravan = overnightCostCaravan;
-//    }
-//
-//    public Float getDayVisitorCost() {
-//        return dayVisitorCost;
-//    }
-//
-//    public void setDayVisitorCost(Float dayVisitorCost) {
-//        this.dayVisitorCost = dayVisitorCost;
-//    }
+    public int getOvernightCostBus() {
+        return overnightCostBus;
+    }
+
+    public void setOvernightCostBus(int overnightCostBus) {
+        this.overnightCostBus = overnightCostBus;
+    }
+
+    public int getOvernightCostCaravan() {
+        return overnightCostCaravan;
+    }
+
+    public void setOvernightCostCaravan(int overnightCostCaravan) {
+        this.overnightCostCaravan = overnightCostCaravan;
+    }
+
+    public int getDayVisitorCost() {
+        return dayVisitorCost;
+    }
+
+    public void setDayVisitorCost(int dayVisitorCost) {
+        this.dayVisitorCost = dayVisitorCost;
+    }
 }

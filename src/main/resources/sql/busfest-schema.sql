@@ -10,6 +10,9 @@ CREATE TABLE conventions (
   convention_number INT NOT NULL,
   starts_on DATETIME NOT NULL,
   ends_on DATETIME NOT NULL,
+  overnight_cost_bus INT DEFAULT NULL,
+  overnight_cost_caravan INT DEFAULT NULL,
+  day_visitor_cost INT DEFAULT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)

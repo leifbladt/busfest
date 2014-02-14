@@ -17,10 +17,12 @@ import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
@@ -76,6 +78,10 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         overnightDataConfirmationPanel.setVisible(false);
         add(overnightDataConfirmationPanel);
 
+        final Label totalCosts = new Label("totalCosts", new PropertyModel(overnightDataFormModel, "totalCosts"));
+        totalCosts.setOutputMarkupPlaceholderTag(true);
+        totalCosts.setVisible(false);
+        add(totalCosts);
         final BootstrapAjaxLink confirmationLink = new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
             @Override
             public void onClick(AjaxRequestTarget target) {
@@ -141,6 +147,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
                 confirmationLink.setVisible(true);
                 target.add(confirmationLink);
+                totalCosts.setVisible(true);
+                target.add(totalCosts);
             }
 
             @Override
