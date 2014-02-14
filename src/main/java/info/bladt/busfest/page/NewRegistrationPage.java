@@ -32,6 +32,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
@@ -91,54 +93,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         overnightDataConfirmationPanel.setVisible(false);
         add(overnightDataConfirmationPanel);
 
-        add(new BootstrapAjaxButton("visitorSubmit", Model.of("weiter"), visitorForm, Buttons.Type.Primary) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
-                VisitorFormModel modelObject = (VisitorFormModel) form.getModelObject();
-
-                visitorForm.setVisible(false);
-                target.add(visitorForm);
-
-                visitorConfirmation.setVisible(true);
-                target.add(visitorConfirmation);
-
-                vehicleForm.setVisible(true);
-                target.add(vehicleForm);
-            }
-        });
-
-        add(new BootstrapAjaxButton("vehicleSubmit", Model.of("weiter"), vehicleForm, Buttons.Type.Primary) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
-                VehicleFormModel modelObject = (VehicleFormModel)form.getModelObject();
-
-                vehicleForm.setVisible(false);
-                target.add(vehicleForm);
-
-                vehicleConfirmation.setVisible(true);
-                target.add(vehicleConfirmation);
-
-                overnightDataForm.setVisible(true);
-                target.add(overnightDataForm);
-            }
-        });
-
-        add(new BootstrapAjaxButton("overnightDataSubmit", Model.of("weiter"), overnightDataForm, Buttons.Type.Primary) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
-
-                overnightDataForm.setVisible(false);
-                target.add(overnightDataForm);
-
-                overnightDataConfirmationPanel.setVisible(true);
-                target.add(overnightDataConfirmationPanel);
-            }
-        });
-
-        add(new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
+        final BootstrapAjaxLink confirmationLink = new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 // TODO Extract into service object (within a transaction)
@@ -158,50 +113,60 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
                 setResponsePage(RegistrationPage.class);
             }
+        };
+        confirmationLink.setOutputMarkupPlaceholderTag(true);
+        confirmationLink.setVisible(false);
+        add(confirmationLink);
+
+        visitorForm.setNextListener(new NextListener() {
+            @Override
+            public void onUpdate(AjaxRequestTarget target) {
+                visitorForm.setVisible(false);
+                target.add(visitorForm);
+
+                visitorConfirmation.setVisible(true);
+                target.add(visitorConfirmation);
+
+                vehicleForm.setVisible(true);
+                target.add(vehicleForm);
+            }
         });
+
+
+        vehicleForm.setNextListener(new NextListener() {
+            @Override
+            public void onUpdate(AjaxRequestTarget target) {
+                vehicleForm.setVisible(false);
+                target.add(vehicleForm);
+
+                vehicleConfirmation.setVisible(true);
+                target.add(vehicleConfirmation);
+
+                overnightDataForm.setVisible(true);
+                target.add(overnightDataForm);
+            }
+        });
+
+        overnightDataForm.setNextListener(new NextListener() {
+            @Override
+            public void onUpdate(AjaxRequestTarget target) {
+                overnightDataForm.setVisible(false);
+                target.add(overnightDataForm);
+
+                overnightDataConfirmationPanel.setVisible(true);
+                target.add(overnightDataConfirmationPanel);
+
+                confirmationLink.setVisible(true);
+                target.add(confirmationLink);
+            }
+        });
+
     }
 
-    private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
-        Visitor visitor = new Visitor();
-        VisitorFormModel object = visitorFormModel.getObject();
-        visitor.setFirstName(object.getFirstName());
-        visitor.setLastName(object.getLastName());
-        visitor.setStreet(object.getAddress());
-        visitor.setZipCode(object.getZipCode());
-        visitor.setCity(object.getCity());
-        visitor.setCountry(object.getCountry());
-        visitor.setDateOfBirth(object.getDateOfBirth());
-        visitor.setTelephoneNumber(object.getTelephoneNumber());
-        visitor.setEmailAddress(object.getEmailAddress());
-
-        return visitor;
-    }
-
-    private Vehicle createVehicle(IModel<VehicleFormModel> vehicleFormModel) {
-        Vehicle vehicle = new Vehicle();
-        VehicleFormModel object = vehicleFormModel.getObject();
-        vehicle.setType(object.getType());
-        vehicle.setLicensePlateNumber(object.getLicensePlateNumber());
-
-        return vehicle;
-    }
-
-    private OvernightData createOvernightData(IModel<OvernightDataFormModel> overnightDataFormModel) {
-        OvernightData overnightData = new OvernightData();
-        OvernightDataFormModel object = overnightDataFormModel.getObject();
-        overnightData.setFellowPassengers(object.getFellowPassengers());
-
-        return overnightData;
-    }
-
-    private class VisitorForm extends BootstrapForm<VisitorFormModel> {
-        private final IModel<VisitorFormModel> model;
+    private class VisitorForm extends AbstractForm<VisitorFormModel> {
 
         public VisitorForm(String componentId, IModel<VisitorFormModel> model) {
-            super(componentId);
-            this.model = model;
-            setDefaultModel(new CompoundPropertyModel(model));
-            add(new FormBehavior(FormType.Horizontal));
+            super(componentId, model);
         }
 
         @Override
@@ -210,17 +175,23 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VisitorInputPanel visitorInputPanel = new VisitorInputPanel("visitorInput", model);
             add(visitorInputPanel);
+
+            add(new BootstrapAjaxButton("visitorSubmit", Model.of("weiter"), Buttons.Type.Primary) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    super.onSubmit(target, form);
+                    if (nextListener != null) {
+                        nextListener.onUpdate(target);
+                    }
+                }
+            });
         }
     }
 
-    private class VehicleForm extends BootstrapForm {
-        private final IModel<VehicleFormModel> model;
+    private class VehicleForm extends AbstractForm<VehicleFormModel> {
 
         public VehicleForm(String componentId, IModel<VehicleFormModel> model) {
-            super(componentId);
-            this.model = model;
-            setDefaultModel(new CompoundPropertyModel(model));
-            add(new FormBehavior(FormType.Horizontal));
+            super(componentId, model);
         }
 
         @Override
@@ -229,17 +200,23 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VehicleInputPanel vehicleInputPanel = new VehicleInputPanel("vehicleInput", model);
             add(vehicleInputPanel);
+
+            add(new BootstrapAjaxButton("vehicleSubmit", Model.of("weiter"), Buttons.Type.Primary) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    super.onSubmit(target, form);
+                    if (nextListener != null) {
+                        nextListener.onUpdate(target);
+                    }
+                }
+            });
         }
     }
 
-    private class OvernightDataForm extends BootstrapForm {
-        private final IModel<OvernightDataFormModel> model;
+    private class OvernightDataForm extends AbstractForm<OvernightDataFormModel> {
 
         public OvernightDataForm(String componentId, IModel<OvernightDataFormModel> model) {
             super(componentId, model);
-            this.model = model;
-            setDefaultModel(new CompoundPropertyModel(model));
-            add(new FormBehavior(FormType.Horizontal));
         }
 
         @Override
@@ -248,6 +225,37 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             OvernightDataInputPanel overnightDataInputPanel = new OvernightDataInputPanel("overnightDataInput", model);
             add(overnightDataInputPanel);
+
+            add(new BootstrapAjaxButton("overnightDataSubmit", Model.of("weiter"), Buttons.Type.Primary) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    super.onSubmit(target, form);
+                    if (nextListener != null) {
+                        nextListener.onUpdate(target);
+                    }
+                }
+            });
         }
+    }
+
+    private abstract class AbstractForm<T> extends BootstrapForm {
+        protected NextListener nextListener;
+
+        protected final IModel<T> model;
+
+        protected AbstractForm(String componentId, IModel<T> model) {
+            super(componentId, model);
+            this.model = model;
+            setDefaultModel(new CompoundPropertyModel(model));
+            add(new FormBehavior(FormType.Horizontal));
+        }
+
+        public void setNextListener(NextListener nextListener) {
+            this.nextListener = nextListener;
+        }
+    }
+
+    private interface NextListener extends Serializable {
+        public void onUpdate(AjaxRequestTarget target);
     }
 }
