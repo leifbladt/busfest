@@ -6,7 +6,6 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
-import info.bladt.busfest.BusfestSession;
 import info.bladt.busfest.component.OvernightDataConfirmationPanel;
 import info.bladt.busfest.component.OvernightDataInputPanel;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
@@ -16,14 +15,7 @@ import info.bladt.busfest.component.VisitorInputPanel;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
-import info.bladt.busfest.persistence.ConventionAttendance;
-import info.bladt.busfest.persistence.OvernightData;
-import info.bladt.busfest.persistence.Vehicle;
-import info.bladt.busfest.persistence.Visitor;
-import info.bladt.busfest.persistence.repository.ConventionAttendanceRepository;
-import info.bladt.busfest.persistence.repository.OvernightDataRepository;
-import info.bladt.busfest.persistence.repository.VehicleRepository;
-import info.bladt.busfest.persistence.repository.VisitorRepository;
+import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -43,16 +35,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
     // TODO Workflow for returning/pre-registered visitors
 
     @SpringBean
-    private VisitorRepository visitorRepository;
-
-    @SpringBean
-    private VehicleRepository vehicleRepository;
-
-    @SpringBean
-    private OvernightDataRepository overnightDataRepository;
-
-    @SpringBean
-    private ConventionAttendanceRepository conventionAttendanceRepository;
+    private ConventionAttendanceService conventionAttendanceService;
 
     @Override
     protected void onInitialize() {
@@ -96,21 +79,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         final BootstrapAjaxLink confirmationLink = new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                // TODO Extract into service object (within a transaction)
-                Visitor visitor = visitorRepository.save(createVisitor(visitorFormModel));
-                Vehicle vehicle = vehicleRepository.save(createVehicle(vehicleFormModel));
-
-                ConventionAttendance conventionAttendance = new ConventionAttendance();
-                conventionAttendance.setConvention(BusfestSession.get().getActiveConvention().getObject());
-                conventionAttendance.setVisitor(visitor);
-                conventionAttendance.setVehicle(vehicle);
-
-                // TODO Check for overnight stay
-                OvernightData overnightData = overnightDataRepository.save(createOvernightData(overnightDataFormModel));
-                conventionAttendance.setOvernightData(overnightData);
-
-                conventionAttendanceRepository.save(conventionAttendance);
-
+                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
                 setResponsePage(RegistrationPage.class);
             }
         };
