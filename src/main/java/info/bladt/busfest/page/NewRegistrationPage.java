@@ -144,16 +144,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VisitorInputPanel visitorInputPanel = new VisitorInputPanel("visitorInput", model);
             add(visitorInputPanel);
+        }
 
-            add(new BootstrapAjaxButton("visitorSubmit", Model.of("weiter"), Buttons.Type.Primary) {
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    super.onSubmit(target, form);
-                    if (nextListener != null) {
-                        nextListener.onUpdate(target);
-                    }
-                }
-            });
+        @Override
+        protected String nextButtonId() {
+            return "visitorSubmit";
         }
     }
 
@@ -169,16 +164,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VehicleInputPanel vehicleInputPanel = new VehicleInputPanel("vehicleInput", model);
             add(vehicleInputPanel);
+        }
 
-            add(new BootstrapAjaxButton("vehicleSubmit", Model.of("weiter"), Buttons.Type.Primary) {
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    super.onSubmit(target, form);
-                    if (nextListener != null) {
-                        nextListener.onUpdate(target);
-                    }
-                }
-            });
+        @Override
+        protected String nextButtonId() {
+            return "vehicleSubmit";
         }
     }
 
@@ -194,16 +184,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             OvernightDataInputPanel overnightDataInputPanel = new OvernightDataInputPanel("overnightDataInput", model);
             add(overnightDataInputPanel);
+        }
 
-            add(new BootstrapAjaxButton("overnightDataSubmit", Model.of("weiter"), Buttons.Type.Primary) {
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    super.onSubmit(target, form);
-                    if (nextListener != null) {
-                        nextListener.onUpdate(target);
-                    }
-                }
-            });
+        @Override
+        protected String nextButtonId() {
+            return "overnightDataSubmit";
         }
     }
 
@@ -219,6 +204,24 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             add(new FormBehavior(FormType.Horizontal));
         }
 
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
+            add(new BootstrapAjaxButton(this.nextButtonId(), Model.of("weiter"), Buttons.Type.Primary) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    super.onSubmit(target, form);
+                    if (nextListener != null) {
+                        nextListener.onUpdate(target);
+                    }
+                }
+            });
+        }
+
+        protected abstract String nextButtonId();
+
+        // TODO Encapsulate components the right (aka wicket) way
         public void setNextListener(NextListener nextListener) {
             this.nextListener = nextListener;
         }
