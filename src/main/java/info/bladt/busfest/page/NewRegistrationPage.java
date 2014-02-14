@@ -44,7 +44,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         final IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
 
         final VisitorForm visitorForm = new VisitorForm("visitor", visitorFormModel);
-        visitorForm.setOutputMarkupId(true);
+        visitorForm.setOutputMarkupPlaceholderTag(true);
         add(visitorForm);
 
         final VisitorConfirmationPanel visitorConfirmation = new VisitorConfirmationPanel("visitorConfirmation", visitorFormModel);
@@ -87,9 +87,9 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         confirmationLink.setVisible(false);
         add(confirmationLink);
 
-        visitorForm.setNextListener(new NextListener() {
+        visitorForm.setStepListener(new WizardStepListener() {
             @Override
-            public void onUpdate(AjaxRequestTarget target) {
+            public void onNext(AjaxRequestTarget target) {
                 visitorForm.setVisible(false);
                 target.add(visitorForm);
 
@@ -99,12 +99,14 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                 vehicleForm.setVisible(true);
                 target.add(vehicleForm);
             }
+
+            @Override
+            public void onPrevious(AjaxRequestTarget target) {}
         });
 
-
-        vehicleForm.setNextListener(new NextListener() {
+        vehicleForm.setStepListener(new WizardStepListener() {
             @Override
-            public void onUpdate(AjaxRequestTarget target) {
+            public void onNext(AjaxRequestTarget target) {
                 vehicleForm.setVisible(false);
                 target.add(vehicleForm);
 
@@ -114,11 +116,23 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                 overnightDataForm.setVisible(true);
                 target.add(overnightDataForm);
             }
+
+            @Override
+            public void onPrevious(AjaxRequestTarget target) {
+                visitorForm.setVisible(true);
+                target.add(visitorForm);
+
+                visitorConfirmation.setVisible(false);
+                target.add(visitorConfirmation);
+
+                vehicleForm.setVisible(false);
+                target.add(vehicleForm);
+            }
         });
 
-        overnightDataForm.setNextListener(new NextListener() {
+        overnightDataForm.setStepListener(new WizardStepListener() {
             @Override
-            public void onUpdate(AjaxRequestTarget target) {
+            public void onNext(AjaxRequestTarget target) {
                 overnightDataForm.setVisible(false);
                 target.add(overnightDataForm);
 
@@ -127,6 +141,18 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
                 confirmationLink.setVisible(true);
                 target.add(confirmationLink);
+            }
+
+            @Override
+            public void onPrevious(AjaxRequestTarget target) {
+                vehicleForm.setVisible(true);
+                target.add(vehicleForm);
+
+                vehicleConfirmation.setVisible(false);
+                target.add(vehicleConfirmation);
+
+                overnightDataForm.setVisible(false);
+                target.add(overnightDataForm);
             }
         });
 
@@ -150,6 +176,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         protected String nextButtonId() {
             return "visitorSubmit";
         }
+
+        @Override
+        protected String previousButtonId() {
+            return "visitorPrevious";
+        }
     }
 
     private class VehicleForm extends AbstractForm<VehicleFormModel> {
@@ -169,6 +200,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         @Override
         protected String nextButtonId() {
             return "vehicleSubmit";
+        }
+
+        @Override
+        protected String previousButtonId() {
+            return "vehiclePrevious";
         }
     }
 
@@ -190,10 +226,16 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         protected String nextButtonId() {
             return "overnightDataSubmit";
         }
+
+        @Override
+        protected String previousButtonId() {
+            return "overnightDataPrevious";
+        }
     }
 
     private abstract class AbstractForm<T> extends BootstrapForm {
-        protected NextListener nextListener;
+
+        protected WizardStepListener stepListener;
 
         protected final IModel<T> model;
 
@@ -212,8 +254,18 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     super.onSubmit(target, form);
-                    if (nextListener != null) {
-                        nextListener.onUpdate(target);
+                    if (stepListener != null) {
+                        stepListener.onNext(target);
+                    }
+                }
+            });
+
+            add(new BootstrapAjaxButton(this.previousButtonId(), Model.of("zurück"), Buttons.Type.Primary) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    super.onSubmit(target, form);
+                    if (stepListener != null) {
+                        stepListener.onPrevious(target);
                     }
                 }
             });
@@ -221,13 +273,17 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
         protected abstract String nextButtonId();
 
+        protected abstract String previousButtonId();
+
         // TODO Encapsulate components the right (aka wicket) way
-        public void setNextListener(NextListener nextListener) {
-            this.nextListener = nextListener;
+        public void setStepListener(WizardStepListener stepListener) {
+            this.stepListener = stepListener;
         }
     }
 
-    private interface NextListener extends Serializable {
-        public void onUpdate(AjaxRequestTarget target);
+    private interface WizardStepListener extends Serializable {
+        public void onPrevious(AjaxRequestTarget target);
+
+        public void onNext(AjaxRequestTarget target);
     }
 }
