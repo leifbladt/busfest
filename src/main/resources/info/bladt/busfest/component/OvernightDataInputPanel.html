@@ -2,8 +2,19 @@
 <body>
 <wicket:panel>
     <form wicket:id="overnightData">
+        <div wicket:id="overnightVisitorGroup">
+            <input type="checkbox" wicket:id="overnightVisitor">
+        </div>
+
         <div wicket:id="overnightCountGroup">
             <input type="number" wicket:id="overnightCount">
+        </div>
+
+        <div wicket:id="caravanGroup">
+            <span wicket:id="caravan">
+                <input type="radio" wicket:id="Ja">
+                <input type="radio" wicket:id="Nein">
+            </span>
         </div>
 
         <div wicket:id="fellowPassengersGroup">

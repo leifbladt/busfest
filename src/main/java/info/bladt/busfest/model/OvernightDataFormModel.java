@@ -1,8 +1,6 @@
 package info.bladt.busfest.model;
 
 import info.bladt.busfest.BusfestSession;
-import info.bladt.busfest.service.ConventionAttendanceService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
