@@ -36,6 +36,8 @@ public class RegistrationPage extends AuthenticatedBasePage {
         columns.add(new PropertyColumn(Model.of("Vorname"), "visitor.firstName"));
         columns.add(new PropertyColumn(Model.of("Fahrzeugtyp"), "vehicle.type"));
         columns.add(new PropertyColumn(Model.of("Kennzeichen"), "vehicle.licensePlateNumber"));
+        columns.add(new PropertyColumn(Model.of("Übernachtungen"), "overnightData.overnightCount"));
+        columns.add(new PropertyColumn(Model.of("Mitreisende"), "overnightData.fellowPassengers"));
         DefaultDataTable latestAttendances = new DefaultDataTable("latestAttendances", columns, new ConventionAttendanceProvider(), 5);
         latestAttendances.add(new TableBehavior());
         add(latestAttendances);

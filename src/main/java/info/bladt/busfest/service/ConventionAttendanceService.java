@@ -44,9 +44,10 @@ public class ConventionAttendanceService {
         conventionAttendance.setVisitor(visitor);
         conventionAttendance.setVehicle(vehicle);
 
-        // TODO Check for overnight stay
-        OvernightData overnightData = overnightDataRepository.save(createOvernightData(overnightDataFormModel));
-        conventionAttendance.setOvernightData(overnightData);
+        if (overnightDataFormModel.getObject().getOvernightVisitor()) {
+            OvernightData overnightData = overnightDataRepository.save(createOvernightData(overnightDataFormModel));
+            conventionAttendance.setOvernightData(overnightData);
+        }
 
         conventionAttendanceRepository.save(conventionAttendance);
     }
@@ -79,7 +80,9 @@ public class ConventionAttendanceService {
     private OvernightData createOvernightData(IModel<OvernightDataFormModel> overnightDataFormModel) {
         OvernightData overnightData = new OvernightData();
         OvernightDataFormModel object = overnightDataFormModel.getObject();
+        overnightData.setOvernightCount(object.getOvernightCount());
         overnightData.setFellowPassengers(object.getFellowPassengers());
+        overnightData.setCaravan(object.getCaravan());
 
         return overnightData;
     }

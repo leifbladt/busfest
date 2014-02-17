@@ -7,13 +7,10 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.NumberTextField;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 /**
  * Created by leif on 11.02.14.
@@ -37,12 +34,8 @@ public class OvernightDataInputPanel extends Panel {
         form.add(overnightCountGroup);
 
         FormGroup caravanGroup = new CustomFormGroup("caravanGroup", Model.of("Wohnwagen"));
-        RadioGroup caravanRadioGroup = new RadioGroup("caravan");
-        Radio radioYes = new Radio("Ja", new PropertyModel(model, "caravan"));
-        Radio radioNo = new Radio("Nein", new PropertyModel(model, "caravan"));
-        caravanRadioGroup.add(radioYes);
-        caravanRadioGroup.add(radioNo);
-        caravanGroup.add(caravanRadioGroup);
+        CheckBox caravan = new CheckBox("caravan");
+        caravanGroup.add(caravan);
         form.add(caravanGroup);
 
         FormGroup fellowPassengerCountGroup = new CustomFormGroup("fellowPassengersGroup", Model.of("Anzahl Mitreisende"));

@@ -1,6 +1,7 @@
 package info.bladt.busfest.model;
 
 import info.bladt.busfest.BusfestSession;
+import info.bladt.busfest.persistence.Convention;
 
 import java.io.Serializable;
 
@@ -50,13 +51,18 @@ public class OvernightDataFormModel implements Serializable {
     }
 
     public int getTotalCosts() {
-        ConventionModel activeConvention = BusfestSession.get().getActiveConvention();
+        Convention activeConvention = BusfestSession.get().getActiveConvention().getObject();
 
-        // TODO Caravan
         if (overnightVisitor != null && overnightVisitor) {
-            return overnightCount * activeConvention.getObject().getOvernightCostBus();
+            int cost = overnightCount * activeConvention.getOvernightCostBus();
+
+            if (caravan != null && caravan) {
+                cost += overnightCount * activeConvention.getOvernightCostCaravan();
+            }
+
+            return cost;
         } else {
-            return activeConvention.getObject().getDayVisitorCost();
+            return activeConvention.getDayVisitorCost();
         }
     }
 }

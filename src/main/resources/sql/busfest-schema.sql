@@ -46,7 +46,9 @@ CREATE TABLE vehicles (
 
 CREATE TABLE overnight_data (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  overnight_count INT DEFAULT 0,
   fellow_passengers INT DEFAULT 0,
+  caravan TINYINT(1) DEFAULT 0,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)

@@ -11,8 +11,14 @@ import javax.persistence.Table;
 @Entity
 public class OvernightData extends AbstractEntity {
 
+    @Column(name = "overnight_count")
+    private int overnightCount;
+
     @Column(name = "fellow_passengers")
     private int fellowPassengers;
+
+    @Column(name = "caravan")
+    private boolean caravan;
 
     public OvernightData() {}
 
@@ -26,5 +32,21 @@ public class OvernightData extends AbstractEntity {
 
     public void setFellowPassengers(int fellowPassengers) {
         this.fellowPassengers = fellowPassengers;
+    }
+
+    public int getOvernightCount() {
+        return overnightCount;
+    }
+
+    public void setOvernightCount(int overnightCount) {
+        this.overnightCount = overnightCount;
+    }
+
+    public boolean isCaravan() {
+        return caravan;
+    }
+
+    public void setCaravan(boolean caravan) {
+        this.caravan = caravan;
     }
 }
