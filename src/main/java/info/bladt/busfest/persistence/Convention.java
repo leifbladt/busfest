@@ -79,7 +79,7 @@ public class Convention extends AbstractEntity {
     }
 
     public String getDisplayName() {
-        return String.format("%s 2014", getLocation());
+        return String.format("%s %tY", getLocation(), getStartsOn());
     }
 
     public int getOvernightCostBus() {
