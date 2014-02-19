@@ -8,13 +8,16 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.component.OvernightDataConfirmationPanel;
 import info.bladt.busfest.component.OvernightDataInputPanel;
+import info.bladt.busfest.component.SearchInputPanel;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
 import info.bladt.busfest.component.VisitorInputPanel;
 import info.bladt.busfest.model.OvernightDataFormModel;
+import info.bladt.busfest.model.RegistrationSearchFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
+import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
@@ -35,6 +38,7 @@ import java.io.Serializable;
 public class NewRegistrationPage extends AuthenticatedBasePage {
 
     // TODO Workflow for returning/pre-registered visitors
+    // TODO Workflow for PDF output
 
     @SpringBean
     private ConventionAttendanceService conventionAttendanceService;
@@ -43,10 +47,17 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
+        final IModel<RegistrationSearchFormModel> searchFormModel = Model.of(new RegistrationSearchFormModel());
+
+        final SearchForm searchForm = new SearchForm("search", searchFormModel);
+        searchForm.setOutputMarkupPlaceholderTag(true);
+        add(searchForm);
+
         final IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
 
         final VisitorForm visitorForm = new VisitorForm("visitor", visitorFormModel);
         visitorForm.setOutputMarkupPlaceholderTag(true);
+        visitorForm.setVisible(false);
         add(visitorForm);
 
         final VisitorConfirmationPanel visitorConfirmation = new VisitorConfirmationPanel("visitorConfirmation", visitorFormModel);
@@ -93,6 +104,32 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         confirmationLink.setVisible(false);
         add(confirmationLink);
 
+        searchForm.setStepListener(new WizardStepListener() {
+            @Override
+            public void onNext(AjaxRequestTarget target) {
+                Visitor visitor = searchFormModel.getObject().getVisitor();
+                // TODO Preselect vehicle
+                // TODO Preselect provisions
+                if (visitor != null) {
+                    // TODO Convert complete object
+                    VisitorFormModel formModel = new VisitorFormModel();
+                    formModel.setId(visitor.getId());
+                    formModel.setFirstName(visitor.getFirstName());
+                    formModel.setLastName(visitor.getLastName());
+                    visitorFormModel.setObject(formModel);
+                }
+
+                searchForm.setVisible(false);
+                target.add(searchForm);
+
+                visitorForm.setVisible(true);
+                target.add(visitorForm);
+            }
+
+            @Override
+            public void onPrevious(AjaxRequestTarget target) {}
+        });
+
         visitorForm.setStepListener(new WizardStepListener() {
             @Override
             public void onNext(AjaxRequestTarget target) {
@@ -107,7 +144,13 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             }
 
             @Override
-            public void onPrevious(AjaxRequestTarget target) {}
+            public void onPrevious(AjaxRequestTarget target) {
+                searchForm.setVisible(true);
+                target.add(searchForm);
+
+                visitorForm.setVisible(false);
+                target.add(visitorForm);
+            }
         });
 
         vehicleForm.setStepListener(new WizardStepListener() {
@@ -164,6 +207,31 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             }
         });
 
+    }
+
+    private class SearchForm extends AbstractForm<RegistrationSearchFormModel> {
+
+        private SearchForm(String componentId, IModel<RegistrationSearchFormModel> model) {
+            super(componentId, model);
+        }
+
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
+            SearchInputPanel searchInputPanel = new SearchInputPanel("searchInput", model);
+            add(searchInputPanel);
+        }
+
+        @Override
+        protected String nextButtonId() {
+            return "searchSubmit";
+        }
+
+        @Override
+        protected String previousButtonId() {
+            return "searchPrevious";
+        }
     }
 
     private class VisitorForm extends AbstractForm<VisitorFormModel> {

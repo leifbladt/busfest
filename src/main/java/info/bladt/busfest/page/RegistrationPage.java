@@ -3,6 +3,7 @@ package info.bladt.busfest.page;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.table.TableBehavior;
+import info.bladt.busfest.persistence.repository.VisitorRepository;
 import info.bladt.busfest.provider.ConventionAttendanceProvider;
 import info.bladt.busfest.service.PdfService;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -26,6 +27,9 @@ public class RegistrationPage extends AuthenticatedBasePage {
 
     @SpringBean
     PdfService pdfService;
+
+    @SpringBean
+    VisitorRepository visitorRepository;
 
     @Override
     protected void onInitialize() {

@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by leif on 09.02.14.
  */
 public class VisitorFormModel implements Serializable {
+    private Long id;
     private String firstName;
     private String lastName;
     // TODO Rename to street
@@ -17,6 +18,14 @@ public class VisitorFormModel implements Serializable {
     private Date dateOfBirth;
     private String telephoneNumber;
     private String emailAddress;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

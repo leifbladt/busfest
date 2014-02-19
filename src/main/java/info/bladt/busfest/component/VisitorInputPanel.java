@@ -7,6 +7,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.DateTextField;
 import info.bladt.busfest.model.VisitorFormModel;
 import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -24,6 +25,10 @@ public class VisitorInputPanel extends Panel {
 
         final BootstrapForm<VisitorFormModel> form = new BootstrapForm<VisitorFormModel>("visitor", compound);
         form.add(new FormBehavior(FormType.Horizontal));
+
+        // TODO Add id as hidden field
+        HiddenField<Long> visitorId = new HiddenField<Long>("id");
+        form.add(visitorId);
 
         FormGroup nameGroup = new CustomFormGroup("nameGroup", Model.of("Vorname / Nachname"));
         TextField firstName = new TextField("firstName");
