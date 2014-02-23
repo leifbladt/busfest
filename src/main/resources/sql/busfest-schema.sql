@@ -1,8 +1,19 @@
+DROP TABLE IF EXISTS provisions;
 DROP TABLE IF EXISTS convention_attendances;
 DROP TABLE IF EXISTS overnight_data;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS visitors;
 DROP TABLE IF EXISTS conventions;
+
+CREATE TABLE provisions (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  description VARCHAR(255) NOT NULL,
+  cost INT NOT NULL,
+  convention_id BIGINT(20) DEFAULT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (id)
+);
 
 CREATE TABLE conventions (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
