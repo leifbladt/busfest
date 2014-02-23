@@ -62,7 +62,6 @@ public class SearchInputPanel extends Panel {
         visitor.setOutputMarkupId(true);
         form.add(visitor);
 
-        // TODO Disable autocomplete on textfield
         TextField<String> query = new TextField<String>("query");
         query.add(new AjaxFormSubmitBehavior("onkeyup") {
             @Override

@@ -26,7 +26,6 @@ public class VisitorInputPanel extends Panel {
         final BootstrapForm<VisitorFormModel> form = new BootstrapForm<VisitorFormModel>("visitor", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
-        // TODO Add id as hidden field
         HiddenField<Long> visitorId = new HiddenField<Long>("id");
         form.add(visitorId);
 
