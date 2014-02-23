@@ -35,7 +35,6 @@ public class ConventionAttendanceService {
     private ConventionAttendanceRepository conventionAttendanceRepository;
 
     // TODO Use transaction
-    // TODO Create or update (save handles both, both wants to reset created_at when not explicitly set)
     public void createConventionAttendance(IModel<VisitorFormModel> visitorFormModel, IModel<VehicleFormModel> vehicleFormModel, IModel<OvernightDataFormModel> overnightDataFormModel) {
         Visitor visitor = visitorRepository.save(createVisitor(visitorFormModel));
         Vehicle vehicle = vehicleRepository.save(createVehicle(vehicleFormModel));
@@ -54,8 +53,13 @@ public class ConventionAttendanceService {
     }
 
     private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
-        Visitor visitor = new Visitor();
         VisitorFormModel object = visitorFormModel.getObject();
+        Visitor visitor;
+        if (object.getId() == null) {
+            visitor = new Visitor();
+        } else {
+            visitor = visitorRepository.findOne(object.getId());
+        }
         visitor.setId(object.getId());
         visitor.setFirstName(object.getFirstName());
         visitor.setLastName(object.getLastName());

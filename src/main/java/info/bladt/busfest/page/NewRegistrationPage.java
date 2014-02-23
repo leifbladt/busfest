@@ -110,14 +110,20 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                 Visitor visitor = searchFormModel.getObject().getVisitor();
                 // TODO Preselect vehicle
                 // TODO Preselect provisions
+                VisitorFormModel formModel = new VisitorFormModel();
                 if (visitor != null) {
-                    // TODO Convert complete object
-                    VisitorFormModel formModel = new VisitorFormModel();
                     formModel.setId(visitor.getId());
                     formModel.setFirstName(visitor.getFirstName());
                     formModel.setLastName(visitor.getLastName());
-                    visitorFormModel.setObject(formModel);
+                    formModel.setAddress(visitor.getStreet());
+                    formModel.setZipCode(visitor.getZipCode());
+                    formModel.setCity(visitor.getCity());
+                    formModel.setCountry(visitor.getCountry());
+                    formModel.setDateOfBirth(visitor.getDateOfBirth());
+                    formModel.setEmailAddress(visitor.getEmailAddress());
+                    formModel.setTelephoneNumber(visitor.getTelephoneNumber());
                 }
+                visitorFormModel.setObject(formModel);
 
                 searchForm.setVisible(false);
                 target.add(searchForm);
