@@ -15,8 +15,8 @@ public class Convention extends AbstractEntity {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "convention_number")
-    private int conventionNumber;
+    @Column(name = "convention")
+    private String convention;
 
     @Column(name = "starts_on")
     private Date startsOn;
@@ -36,9 +36,9 @@ public class Convention extends AbstractEntity {
 
     public Convention() {}
 
-    public Convention(String location, int conventionNumber, Date startsOn, Date endsOn, int overnightCostBus, int overnightCostCaravan, int dayVisitorCost) {
+    public Convention(String location, String convention, Date startsOn, Date endsOn, int overnightCostBus, int overnightCostCaravan, int dayVisitorCost) {
         this.location = location;
-        this.conventionNumber = conventionNumber;
+        this.convention = convention;
         this.startsOn = startsOn;
         this.endsOn = endsOn;
         this.overnightCostBus = overnightCostBus;
@@ -54,12 +54,12 @@ public class Convention extends AbstractEntity {
         this.location = location;
     }
 
-    public int getConventionNumber() {
-        return conventionNumber;
+    public String getConvention() {
+        return convention;
     }
 
-    public void setConventionNumber(int conventionNumber) {
-        this.conventionNumber = conventionNumber;
+    public void setConvention(String convention) {
+        this.convention = convention;
     }
 
     public Date getStartsOn() {
