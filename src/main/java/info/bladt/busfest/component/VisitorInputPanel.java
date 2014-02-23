@@ -19,6 +19,8 @@ import org.apache.wicket.model.Model;
  */
 public class VisitorInputPanel extends Panel {
 
+    // TODO Add feedback panel
+
     public VisitorInputPanel(String id, IModel<VisitorFormModel> model) {
         super(id, model);
         IModel<VisitorFormModel> compound = new CompoundPropertyModel<VisitorFormModel>(model);
