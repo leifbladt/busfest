@@ -31,8 +31,11 @@
                 <button wicket:id="overnightDataSubmit">[weiter]</button>
             </form>
 
-            <span wicket:id="totalCosts" class="h4">[total costs]</span><br>
-            <a wicket:id="finalConfirmation">[weiter]</a>
+            <form wicket:id="confirmation">
+                <div wicket:id="confirmationInput"></div>
+                <button wicket:id="confirmationPrevious">[zurueck]</button>
+                <button wicket:id="confirmationSubmit">[weiter]</button>
+            </form>
         </div>
         <div class="col-md-4">
             <div wicket:id="visitorConfirmation">[visitor confirmation]</div>

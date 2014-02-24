@@ -1,11 +1,11 @@
 package info.bladt.busfest.page;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxButton;
-import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
+import info.bladt.busfest.component.ConfirmationInputPanel;
 import info.bladt.busfest.component.OvernightDataConfirmationPanel;
 import info.bladt.busfest.component.OvernightDataInputPanel;
 import info.bladt.busfest.component.SearchInputPanel;
@@ -13,6 +13,7 @@ import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
 import info.bladt.busfest.component.VisitorInputPanel;
+import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.RegistrationSearchFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
@@ -20,12 +21,10 @@ import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
@@ -89,20 +88,12 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         overnightDataConfirmationPanel.setVisible(false);
         add(overnightDataConfirmationPanel);
 
-        final Label totalCosts = new Label("totalCosts", new PropertyModel(overnightDataFormModel, "totalCosts"));
-        totalCosts.setOutputMarkupPlaceholderTag(true);
-        totalCosts.setVisible(false);
-        add(totalCosts);
-        final BootstrapAjaxLink confirmationLink = new BootstrapAjaxLink("finalConfirmation", Model.of("anmelden"), Buttons.Type.Primary) {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
-                setResponsePage(RegistrationPage.class);
-            }
-        };
-        confirmationLink.setOutputMarkupPlaceholderTag(true);
-        confirmationLink.setVisible(false);
-        add(confirmationLink);
+        final IModel<ConfirmationFormModel> confirmationFormModel = Model.of(new ConfirmationFormModel(overnightDataFormModel));
+
+        final ConfirmationForm confirmationForm = new ConfirmationForm("confirmation", confirmationFormModel);
+        confirmationForm.setOutputMarkupPlaceholderTag(true);
+        confirmationForm.setVisible(false);
+        add(confirmationForm);
 
         searchForm.setStepListener(new WizardStepListener() {
             @Override
@@ -194,10 +185,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                 overnightDataConfirmationPanel.setVisible(true);
                 target.add(overnightDataConfirmationPanel);
 
-                confirmationLink.setVisible(true);
-                target.add(confirmationLink);
-                totalCosts.setVisible(true);
-                target.add(totalCosts);
+                confirmationForm.setVisible(true);
+                target.add(confirmationForm);
             }
 
             @Override
@@ -210,6 +199,26 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
                 overnightDataForm.setVisible(false);
                 target.add(overnightDataForm);
+            }
+        });
+
+        confirmationForm.setStepListener(new WizardStepListener() {
+            @Override
+            public void onPrevious(AjaxRequestTarget target) {
+                overnightDataForm.setVisible(true);
+                target.add(overnightDataForm);
+
+                overnightDataConfirmationPanel.setVisible(false);
+                target.add(overnightDataConfirmationPanel);
+
+                confirmationForm.setVisible(false);
+                target.add(confirmationForm);
+            }
+
+            @Override
+            public void onNext(AjaxRequestTarget target) {
+                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
+                setResponsePage(RegistrationPage.class);
             }
         });
 
@@ -312,6 +321,31 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         @Override
         protected String previousButtonId() {
             return "overnightDataPrevious";
+        }
+    }
+
+    private class ConfirmationForm extends AbstractForm<ConfirmationFormModel> {
+
+        public ConfirmationForm(String componentId, IModel<ConfirmationFormModel> model) {
+            super(componentId, model);
+        }
+
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
+            ConfirmationInputPanel confirmationInputPanel = new ConfirmationInputPanel("confirmationInput", model);
+            add(confirmationInputPanel);
+        }
+
+        @Override
+        protected String nextButtonId() {
+            return "confirmationSubmit";
+        }
+
+        @Override
+        protected String previousButtonId() {
+            return "confirmationPrevious";
         }
     }
 
