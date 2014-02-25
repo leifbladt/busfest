@@ -1,13 +1,19 @@
 package info.bladt.busfest.service;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import info.bladt.busfest.persistence.ConventionAttendance;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -15,37 +21,52 @@ import java.io.File;
 @Component
 public class PdfService {
 
-    public File createRegistrationPdf() throws Exception {
+    public static final float[][] COLUMNS = {
+            { 36, 36, 296, 806 } , { 299, 36, 559, 806 }
+    };
 
-        // Create a document and add a page to it
-        PDDocument document = new PDDocument();
-        PDPage page1 = new PDPage(PDPage.PAGE_SIZE_A4);
-        document.addPage(page1);
+    public File createRegistrationPdf(ConventionAttendance conventionAttendance) throws Exception {
+        // TODO Create in memory
 
-        PDPage page2 = new PDPage(PDPage.PAGE_SIZE_A5);
-        document.addPage(page2);
+        Font smallFont = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL);
+        Font headingFont = new Font(Font.FontFamily.HELVETICA, 13, Font.BOLD);
 
-        // Create a new font object selecting one of the PDF base fonts
-        PDFont font = PDType1Font.HELVETICA_BOLD;
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
+        document.setPageSize(PageSize.A4);
+        document.setMargins(60, 60, 60, 108);
 
-        // Start a new content stream which will "hold" the to be created content
-        PDPageContentStream contentStream = new PDPageContentStream(document, page1);
+        document.open();
 
-        // Define a text content stream using the selected font, moving the cursor and drawing the text "Hello World"
-        contentStream.beginText();
-        contentStream.setFont(font, 12);
-        contentStream.moveTextPositionByAmount( 100, 700 );
-        contentStream.drawString("Hello World");
-        contentStream.endText();
+        document.add(new Paragraph("Teilnehmerdaten", headingFont));
+        PdfPTable table = new PdfPTable(2);
+        PdfPCell cell;
+        cell = new PdfPCell(new Phrase("Organisatorisches"));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Kostenübersicht"));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
 
-        // Make sure that the content stream is closed:
-        contentStream.close();
+        document.add(table);
 
-        // Save the results and ensure that the document is properly closed:
-        File pdfFile = File.createTempFile("anmeldung", ".pdf");
-        document.save(pdfFile);
+        document.add(new Paragraph(
+                "Haftungsausschluss - rechtlicher Hinweis:\n" +
+                "Im Rahmen des Haftungsausschlusses nehmen die Teilnehmer auf eigene Gefahr an der Veranstaltung teil. Sie tragen die alleinige zivil- und strafrechtliche Verantwortung für alle von ihnen oder dem von ihnen benutzten Fahrzeug verursachten Schäden.\n" +
+                        "Der Haftungsausschluss wird mit Abgabe der verbindlichen Anmeldung allen Beteiligten gegenüber wirksam.\n" +
+                        "Die Veranstaltung ist nach den Bestimmungen der Straßenverkehrsordnung (StVO), der Straßenverkehrszulassungsordnung (StVZO) und den Auflagen der zuständigen Erlaubnisbehörde ausgerichtet, die die Teilnehmer mit Abgabe der verbindlichen Anmeldung anerkennen."
+        , smallFont));
+
+        document.add(new Paragraph(
+                "Während der Veranstaltung werden Fotos und Filme gefertigt, die unter Umständen im Internet veröffentlicht werden. Mit Abgabe der Anmeldung erkennt dies jeder Teilnehmer an."
+        , smallFont));
+
+        document.setPageSize(PageSize.A6.rotate());
+        document.newPage();
+
+        document.add(new Paragraph("Test"));
         document.close();
 
-        return pdfFile;
+        return new File("test.pdf");
     }
 }

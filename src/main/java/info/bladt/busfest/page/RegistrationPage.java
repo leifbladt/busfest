@@ -3,6 +3,7 @@ package info.bladt.busfest.page;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.table.TableBehavior;
+import info.bladt.busfest.persistence.ConventionAttendance;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
 import info.bladt.busfest.provider.ConventionAttendanceProvider;
 import info.bladt.busfest.service.PdfService;
@@ -61,7 +62,9 @@ public class RegistrationPage extends AuthenticatedBasePage {
         @Override
         protected File load() {
             try {
-                return pdfService.createRegistrationPdf();
+                ConventionAttendance conventionAttendance = new ConventionAttendance();
+
+                return pdfService.createRegistrationPdf(conventionAttendance);
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }
