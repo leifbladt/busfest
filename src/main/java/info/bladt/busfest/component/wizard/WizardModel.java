@@ -10,7 +10,7 @@ import java.util.List;
 public class WizardModel implements Serializable {
     private WizardStep activeStep;
 
-    private List<WizardStep> steps = new ArrayList<WizardStep>();
+    private List<WizardStep> steps = new ArrayList<>();
 
     public void add(WizardStep step) {
         steps.add(step);

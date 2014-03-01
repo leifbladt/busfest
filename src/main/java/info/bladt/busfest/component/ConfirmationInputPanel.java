@@ -17,9 +17,9 @@ import org.apache.wicket.model.Model;
 public class ConfirmationInputPanel extends Panel {
     public ConfirmationInputPanel(String id, IModel<ConfirmationFormModel> model) {
         super(id, model);
-        IModel<ConfirmationFormModel> compound = new CompoundPropertyModel<ConfirmationFormModel>(model);
+        IModel<ConfirmationFormModel> compound = new CompoundPropertyModel<>(model);
 
-        final BootstrapForm<ConfirmationFormModel> form = new BootstrapForm<ConfirmationFormModel>("confirmation", compound);
+        final BootstrapForm<ConfirmationFormModel> form = new BootstrapForm<>("confirmation", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
         FormGroup typeGroup = new CustomFormGroup("totalCostsGroup", Model.of("Gesamtkosten"));

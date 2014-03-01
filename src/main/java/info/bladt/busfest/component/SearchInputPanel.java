@@ -32,9 +32,9 @@ public class SearchInputPanel extends Panel {
 
     public SearchInputPanel(String id, final IModel<RegistrationSearchFormModel> model) {
         super(id, model);
-        IModel<RegistrationSearchFormModel> compound = new CompoundPropertyModel<RegistrationSearchFormModel>(model);
+        IModel<RegistrationSearchFormModel> compound = new CompoundPropertyModel<>(model);
 
-        final BootstrapForm<RegistrationSearchFormModel> form = new BootstrapForm<RegistrationSearchFormModel>("search", compound);
+        final BootstrapForm<RegistrationSearchFormModel> form = new BootstrapForm<>("search", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
         final List<Visitor> visitorChoices = new ArrayList();

@@ -18,9 +18,9 @@ import org.apache.wicket.model.Model;
 public class OvernightDataInputPanel extends Panel {
     public OvernightDataInputPanel(String id, IModel<OvernightDataFormModel> model) {
         super(id, model);
-        IModel<OvernightDataFormModel> compound = new CompoundPropertyModel<OvernightDataFormModel>(model);
+        IModel<OvernightDataFormModel> compound = new CompoundPropertyModel<>(model);
 
-        final BootstrapForm<OvernightDataFormModel> form = new BootstrapForm<OvernightDataFormModel>("overnightData", compound);
+        final BootstrapForm<OvernightDataFormModel> form = new BootstrapForm<>("overnightData", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
         FormGroup overnightVisitorGroup = new CustomFormGroup("overnightVisitorGroup", Model.of("Übernachtung"));

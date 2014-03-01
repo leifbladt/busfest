@@ -17,9 +17,9 @@ import org.apache.wicket.model.Model;
 public class VehicleInputPanel extends Panel {
     public VehicleInputPanel(String id, IModel<VehicleFormModel> model) {
         super(id, model);
-        IModel<VehicleFormModel> compound = new CompoundPropertyModel<VehicleFormModel>(model);
+        IModel<VehicleFormModel> compound = new CompoundPropertyModel<>(model);
 
-        final BootstrapForm<VehicleFormModel> form = new BootstrapForm<VehicleFormModel>("vehicle", compound);
+        final BootstrapForm<VehicleFormModel> form = new BootstrapForm<>("vehicle", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
         FormGroup typeGroup = new CustomFormGroup("typeGroup", Model.of("Typ"));

@@ -23,9 +23,9 @@ public class VisitorInputPanel extends Panel {
 
     public VisitorInputPanel(String id, IModel<VisitorFormModel> model) {
         super(id, model);
-        IModel<VisitorFormModel> compound = new CompoundPropertyModel<VisitorFormModel>(model);
+        IModel<VisitorFormModel> compound = new CompoundPropertyModel<>(model);
 
-        final BootstrapForm<VisitorFormModel> form = new BootstrapForm<VisitorFormModel>("visitor", compound);
+        final BootstrapForm<VisitorFormModel> form = new BootstrapForm<>("visitor", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
         HiddenField<Long> visitorId = new HiddenField<Long>("id");
