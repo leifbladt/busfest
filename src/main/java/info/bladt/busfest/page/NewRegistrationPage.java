@@ -22,6 +22,7 @@ import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -29,6 +30,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -47,57 +50,124 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         super.onInitialize();
 
         final IModel<RegistrationSearchFormModel> searchFormModel = Model.of(new RegistrationSearchFormModel());
-
-        final SearchForm searchForm = new SearchForm("search", searchFormModel);
-        searchForm.setOutputMarkupPlaceholderTag(true);
-        add(searchForm);
-
         final IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
+        final IModel<VehicleFormModel> vehicleFormModel = Model.of(new VehicleFormModel());
+        final IModel<OvernightDataFormModel> overnightDataFormModel = Model.of(new OvernightDataFormModel());
+        final IModel<ConfirmationFormModel> confirmationFormModel = Model.of(new ConfirmationFormModel(overnightDataFormModel));
 
-        final VisitorForm visitorForm = new VisitorForm("visitor", visitorFormModel);
+        SearchForm searchForm = new SearchForm("search", searchFormModel);
+        searchForm.setOutputMarkupPlaceholderTag(true);
+
+        VisitorForm visitorForm = new VisitorForm("visitor", visitorFormModel);
         visitorForm.setOutputMarkupPlaceholderTag(true);
         visitorForm.setVisible(false);
-        add(visitorForm);
 
-        final VisitorConfirmationPanel visitorConfirmation = new VisitorConfirmationPanel("visitorConfirmation", visitorFormModel);
+        VisitorConfirmationPanel visitorConfirmation = new VisitorConfirmationPanel("visitorConfirmation", visitorFormModel);
         visitorConfirmation.setOutputMarkupPlaceholderTag(true);
         visitorConfirmation.setVisible(false);
         add(visitorConfirmation);
 
-        final IModel<VehicleFormModel> vehicleFormModel = Model.of(new VehicleFormModel());
-
-        final VehicleForm vehicleForm = new VehicleForm("vehicle", vehicleFormModel);
+        VehicleForm vehicleForm = new VehicleForm("vehicle", vehicleFormModel);
         vehicleForm.setOutputMarkupPlaceholderTag(true);
         vehicleForm.setVisible(false);
-        add(vehicleForm);
 
-        final VehicleConfirmationPanel vehicleConfirmation = new VehicleConfirmationPanel("vehicleConfirmation", vehicleFormModel);
+        VehicleConfirmationPanel vehicleConfirmation = new VehicleConfirmationPanel("vehicleConfirmation", vehicleFormModel);
         vehicleConfirmation.setOutputMarkupPlaceholderTag(true);
         vehicleConfirmation.setVisible(false);
         add(vehicleConfirmation);
 
-        final IModel<OvernightDataFormModel> overnightDataFormModel = Model.of(new OvernightDataFormModel());
-
-        final OvernightDataForm overnightDataForm = new OvernightDataForm("overnightData", overnightDataFormModel);
+        OvernightDataForm overnightDataForm = new OvernightDataForm("overnightData", overnightDataFormModel);
         overnightDataForm.setOutputMarkupPlaceholderTag(true);
         overnightDataForm.setVisible(false);
-        add(overnightDataForm);
 
-        final OvernightDataConfirmationPanel overnightDataConfirmationPanel = new OvernightDataConfirmationPanel("overnightDataConfirmation", overnightDataFormModel);
+        OvernightDataConfirmationPanel overnightDataConfirmationPanel = new OvernightDataConfirmationPanel("overnightDataConfirmation", overnightDataFormModel);
         overnightDataConfirmationPanel.setOutputMarkupPlaceholderTag(true);
         overnightDataConfirmationPanel.setVisible(false);
         add(overnightDataConfirmationPanel);
 
-        final IModel<ConfirmationFormModel> confirmationFormModel = Model.of(new ConfirmationFormModel(overnightDataFormModel));
-
-        final ConfirmationForm confirmationForm = new ConfirmationForm("confirmation", confirmationFormModel);
+        ConfirmationForm confirmationForm = new ConfirmationForm("confirmation", confirmationFormModel);
         confirmationForm.setOutputMarkupPlaceholderTag(true);
         confirmationForm.setVisible(false);
-        add(confirmationForm);
 
-        searchForm.setStepListener(new WizardStepListener() {
+        final WizardModel wizardModel = new WizardModel() {
+            public void finish() {
+                System.out.println("really finish");
+                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
+            }
+        };
+        WizardStep searchStep = new WizardStep(searchForm);
+        wizardModel.add(searchStep);
+        wizardModel.add(new WizardStep(visitorForm, visitorConfirmation));
+        wizardModel.add(new WizardStep(vehicleForm, vehicleConfirmation));
+        WizardStep overnightDataStep = new WizardStep(overnightDataForm, overnightDataConfirmationPanel);
+        wizardModel.add(overnightDataStep);
+        WizardStep confirmationStep = new WizardStep(confirmationForm);
+        wizardModel.add(confirmationStep);
+
+        // TODO Make initialization more comfortable
+        wizardModel.setActiveStep(searchStep);
+
+        final BootstrapForm form = new BootstrapForm("form") {
             @Override
-            public void onNext(AjaxRequestTarget target) {
+            protected void onInitialize() {
+                super.onInitialize();
+
+                add(new BootstrapAjaxButton("previous", Model.of("zurück"), Buttons.Type.Primary) {
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        WizardStep activeStep = wizardModel.getActiveStep();
+                        activeStep.getInputForm().setVisible(false);
+                        target.add(activeStep.getInputForm());
+
+                        wizardModel.previous();
+                        WizardStep previousStep = wizardModel.getActiveStep();
+                        previousStep.getInputForm().setVisible(true);
+                        target.add(previousStep.getInputForm());
+
+                        if (previousStep.getConfirmationPanel() != null) {
+                            previousStep.getConfirmationPanel().setVisible(false);
+                            target.add(previousStep.getConfirmationPanel());
+                        }
+                    }
+                });
+                add(new BootstrapAjaxButton("next", Model.of("weiter"), Buttons.Type.Primary) {
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        WizardStep activeStep = wizardModel.getActiveStep();
+                        activeStep.getInputForm().setVisible(false);
+                        target.add(activeStep.getInputForm());
+
+                        if (activeStep.getConfirmationPanel() != null) {
+                            activeStep.getConfirmationPanel().setVisible(true);
+                            target.add(activeStep.getConfirmationPanel());
+                        }
+
+                        wizardModel.next();
+                        WizardStep nextStep = wizardModel.getActiveStep();
+                        nextStep.getInputForm().setVisible(true);
+                        target.add(nextStep.getInputForm());
+                    }
+                });
+                add(new BootstrapAjaxButton("finish", Model.of("fertigstellen"), Buttons.Type.Primary) {
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        System.out.println("finish");
+                        wizardModel.finish();
+                        setResponsePage(RegistrationPage.class);
+                    }
+                });
+            }
+        };
+        form.add(searchForm);
+        form.add(visitorForm);
+        form.add(vehicleForm);
+        form.add(overnightDataForm);
+        form.add(confirmationForm);
+        add(form);
+
+        searchStep.setStepListener(new DefaultWizardStepListener() {
+            @Override
+            public void onNext() {
                 Visitor visitor = searchFormModel.getObject().getVisitor();
                 // TODO Preselect vehicle
                 // TODO Preselect provisions
@@ -115,113 +185,75 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                     formModel.setTelephoneNumber(visitor.getTelephoneNumber());
                 }
                 visitorFormModel.setObject(formModel);
-
-                searchForm.setVisible(false);
-                target.add(searchForm);
-
-                visitorForm.setVisible(true);
-                target.add(visitorForm);
-            }
-
-            @Override
-            public void onPrevious(AjaxRequestTarget target) {}
-        });
-
-        visitorForm.setStepListener(new WizardStepListener() {
-            @Override
-            public void onNext(AjaxRequestTarget target) {
-                visitorForm.setVisible(false);
-                target.add(visitorForm);
-
-                visitorConfirmation.setVisible(true);
-                target.add(visitorConfirmation);
-
-                vehicleForm.setVisible(true);
-                target.add(vehicleForm);
-            }
-
-            @Override
-            public void onPrevious(AjaxRequestTarget target) {
-                searchForm.setVisible(true);
-                target.add(searchForm);
-
-                visitorForm.setVisible(false);
-                target.add(visitorForm);
             }
         });
+    }
 
-        vehicleForm.setStepListener(new WizardStepListener() {
-            @Override
-            public void onNext(AjaxRequestTarget target) {
-                vehicleForm.setVisible(false);
-                target.add(vehicleForm);
+    private class WizardModel implements Serializable {
+        private WizardStep activeStep;
 
-                vehicleConfirmation.setVisible(true);
-                target.add(vehicleConfirmation);
+        private List<WizardStep> steps = new ArrayList<WizardStep>();
 
-                overnightDataForm.setVisible(true);
-                target.add(overnightDataForm);
+        public void add(WizardStep step) {
+            steps.add(step);
+        }
+
+        public WizardStep getActiveStep() {
+            return activeStep;
+        }
+
+        public void setActiveStep(WizardStep activeStep) {
+            this.activeStep = activeStep;
+        }
+
+        public void next() {
+            if (getActiveStep().getStepListener() != null) {
+                getActiveStep().getStepListener().onNext();
             }
+            // TODO Make it failsafe
+            setActiveStep(steps.get(steps.indexOf(activeStep) + 1));
+        }
 
-            @Override
-            public void onPrevious(AjaxRequestTarget target) {
-                visitorForm.setVisible(true);
-                target.add(visitorForm);
-
-                visitorConfirmation.setVisible(false);
-                target.add(visitorConfirmation);
-
-                vehicleForm.setVisible(false);
-                target.add(vehicleForm);
+        public void previous() {
+            if (getActiveStep().getStepListener() != null) {
+                getActiveStep().getStepListener().onPrevious();
             }
-        });
+            // TODO Make it failsafe
+            setActiveStep(steps.get(steps.indexOf(activeStep) - 1));
+        }
 
-        overnightDataForm.setStepListener(new WizardStepListener() {
-            @Override
-            public void onNext(AjaxRequestTarget target) {
-                overnightDataForm.setVisible(false);
-                target.add(overnightDataForm);
+        public void finish() {}
+    }
 
-                overnightDataConfirmationPanel.setVisible(true);
-                target.add(overnightDataConfirmationPanel);
+    private class WizardStep implements Serializable {
+        private AbstractForm inputForm;
+        private Panel confirmationPanel;
+        private WizardStepListener stepListener;
 
-                confirmationForm.setVisible(true);
-                target.add(confirmationForm);
-            }
+        private WizardStep(AbstractForm inputForm) {
+            this.inputForm = inputForm;
+        }
 
-            @Override
-            public void onPrevious(AjaxRequestTarget target) {
-                vehicleForm.setVisible(true);
-                target.add(vehicleForm);
+        private WizardStep(AbstractForm inputForm, Panel confirmationPanel) {
+            this.inputForm = inputForm;
+            this.confirmationPanel = confirmationPanel;
+        }
 
-                vehicleConfirmation.setVisible(false);
-                target.add(vehicleConfirmation);
+        public AbstractForm getInputForm() {
+            return inputForm;
+        }
 
-                overnightDataForm.setVisible(false);
-                target.add(overnightDataForm);
-            }
-        });
+        public Panel getConfirmationPanel() {
+            return confirmationPanel;
+        }
 
-        confirmationForm.setStepListener(new WizardStepListener() {
-            @Override
-            public void onPrevious(AjaxRequestTarget target) {
-                overnightDataForm.setVisible(true);
-                target.add(overnightDataForm);
+        public WizardStepListener getStepListener() {
+            return stepListener;
+        }
 
-                overnightDataConfirmationPanel.setVisible(false);
-                target.add(overnightDataConfirmationPanel);
-
-                confirmationForm.setVisible(false);
-                target.add(confirmationForm);
-            }
-
-            @Override
-            public void onNext(AjaxRequestTarget target) {
-                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
-                setResponsePage(RegistrationPage.class);
-            }
-        });
-
+        public void setStepListener(WizardStepListener stepListener) {
+            this.stepListener = stepListener;
+        }
     }
 
     private class SearchForm extends AbstractForm<RegistrationSearchFormModel> {
@@ -236,16 +268,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             SearchInputPanel searchInputPanel = new SearchInputPanel("searchInput", model);
             add(searchInputPanel);
-        }
-
-        @Override
-        protected String nextButtonId() {
-            return "searchSubmit";
-        }
-
-        @Override
-        protected String previousButtonId() {
-            return "searchPrevious";
         }
     }
 
@@ -262,16 +284,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             VisitorInputPanel visitorInputPanel = new VisitorInputPanel("visitorInput", model);
             add(visitorInputPanel);
         }
-
-        @Override
-        protected String nextButtonId() {
-            return "visitorSubmit";
-        }
-
-        @Override
-        protected String previousButtonId() {
-            return "visitorPrevious";
-        }
     }
 
     private class VehicleForm extends AbstractForm<VehicleFormModel> {
@@ -286,16 +298,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             VehicleInputPanel vehicleInputPanel = new VehicleInputPanel("vehicleInput", model);
             add(vehicleInputPanel);
-        }
-
-        @Override
-        protected String nextButtonId() {
-            return "vehicleSubmit";
-        }
-
-        @Override
-        protected String previousButtonId() {
-            return "vehiclePrevious";
         }
     }
 
@@ -312,16 +314,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             OvernightDataInputPanel overnightDataInputPanel = new OvernightDataInputPanel("overnightDataInput", model);
             add(overnightDataInputPanel);
         }
-
-        @Override
-        protected String nextButtonId() {
-            return "overnightDataSubmit";
-        }
-
-        @Override
-        protected String previousButtonId() {
-            return "overnightDataPrevious";
-        }
     }
 
     private class ConfirmationForm extends AbstractForm<ConfirmationFormModel> {
@@ -336,16 +328,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             ConfirmationInputPanel confirmationInputPanel = new ConfirmationInputPanel("confirmationInput", model);
             add(confirmationInputPanel);
-        }
-
-        @Override
-        protected String nextButtonId() {
-            return "confirmationSubmit";
-        }
-
-        @Override
-        protected String previousButtonId() {
-            return "confirmationPrevious";
         }
     }
 
@@ -365,41 +347,21 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         @Override
         protected void onInitialize() {
             super.onInitialize();
-
-            add(new BootstrapAjaxButton(this.nextButtonId(), Model.of("weiter"), Buttons.Type.Primary) {
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    super.onSubmit(target, form);
-                    if (stepListener != null) {
-                        stepListener.onNext(target);
-                    }
-                }
-            });
-
-            add(new BootstrapAjaxButton(this.previousButtonId(), Model.of("zurück"), Buttons.Type.Primary) {
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    super.onSubmit(target, form);
-                    if (stepListener != null) {
-                        stepListener.onPrevious(target);
-                    }
-                }
-            });
-        }
-
-        protected abstract String nextButtonId();
-
-        protected abstract String previousButtonId();
-
-        // TODO Encapsulate components the right (aka wicket) way
-        public void setStepListener(WizardStepListener stepListener) {
-            this.stepListener = stepListener;
         }
     }
 
     private interface WizardStepListener extends Serializable {
-        public void onPrevious(AjaxRequestTarget target);
+        public void onPrevious();
 
-        public void onNext(AjaxRequestTarget target);
+        public void onNext();
+    }
+
+    private class DefaultWizardStepListener implements WizardStepListener {
+
+        @Override
+        public void onPrevious() {}
+
+        @Override
+        public void onNext() {}
     }
 }

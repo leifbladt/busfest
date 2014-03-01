@@ -7,35 +7,33 @@
     <h3>Neue Anmeldung</h3>
     <div class="row">
         <div class="col-md-8">
-            <form wicket:id="search">
-                <div wicket:id="searchInput"></div>
-                <button wicket:id="searchPrevious">[zurueck]</button>
-                <button wicket:id="searchSubmit">[weiter]</button>
+
+            <form wicket:id="form">
+                <form wicket:id="search">
+                    <div wicket:id="searchInput"></div>
+                </form>
+
+                <form wicket:id="visitor">
+                    <div wicket:id="visitorInput"></div>
+                </form>
+
+                <form wicket:id="vehicle">
+                    <div wicket:id="vehicleInput"></div>
+                </form>
+
+                <form wicket:id="overnightData">
+                    <div wicket:id="overnightDataInput"></div>
+                </form>
+
+                <form wicket:id="confirmation">
+                    <div wicket:id="confirmationInput"></div>
+                </form>
+
+                <button wicket:id="previous">[zurueck]</button>
+                <button wicket:id="next">[weiter]</button>
+                <button wicket:id="finish">[fetigstellen]</button>
             </form>
 
-            <form wicket:id="visitor">
-                <div wicket:id="visitorInput"></div>
-                <button wicket:id="visitorPrevious">[zurueck]</button>
-                <button wicket:id="visitorSubmit">[weiter]</button>
-            </form>
-
-            <form wicket:id="vehicle">
-                <div wicket:id="vehicleInput"></div>
-                <button wicket:id="vehiclePrevious">[zurueck]</button>
-                <button wicket:id="vehicleSubmit">[weiter]</button>
-            </form>
-
-            <form wicket:id="overnightData">
-                <div wicket:id="overnightDataInput"></div>
-                <button wicket:id="overnightDataPrevious">[zurueck]</button>
-                <button wicket:id="overnightDataSubmit">[weiter]</button>
-            </form>
-
-            <form wicket:id="confirmation">
-                <div wicket:id="confirmationInput"></div>
-                <button wicket:id="confirmationPrevious">[zurueck]</button>
-                <button wicket:id="confirmationSubmit">[weiter]</button>
-            </form>
         </div>
         <div class="col-md-4">
             <div wicket:id="visitorConfirmation">[visitor confirmation]</div>
