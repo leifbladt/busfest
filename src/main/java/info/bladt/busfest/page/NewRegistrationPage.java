@@ -13,6 +13,10 @@ import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
 import info.bladt.busfest.component.VisitorConfirmationPanel;
 import info.bladt.busfest.component.VisitorInputPanel;
+import info.bladt.busfest.component.wizard.DefaultWizardStepListener;
+import info.bladt.busfest.component.wizard.WizardModel;
+import info.bladt.busfest.component.wizard.WizardStep;
+import info.bladt.busfest.component.wizard.WizardStepListener;
 import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.RegistrationSearchFormModel;
@@ -189,73 +193,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         });
     }
 
-    private class WizardModel implements Serializable {
-        private WizardStep activeStep;
-
-        private List<WizardStep> steps = new ArrayList<WizardStep>();
-
-        public void add(WizardStep step) {
-            steps.add(step);
-        }
-
-        public WizardStep getActiveStep() {
-            return activeStep;
-        }
-
-        public void setActiveStep(WizardStep activeStep) {
-            this.activeStep = activeStep;
-        }
-
-        public void next() {
-            if (getActiveStep().getStepListener() != null) {
-                getActiveStep().getStepListener().onNext();
-            }
-            // TODO Make it failsafe
-            setActiveStep(steps.get(steps.indexOf(activeStep) + 1));
-        }
-
-        public void previous() {
-            if (getActiveStep().getStepListener() != null) {
-                getActiveStep().getStepListener().onPrevious();
-            }
-            // TODO Make it failsafe
-            setActiveStep(steps.get(steps.indexOf(activeStep) - 1));
-        }
-
-        public void finish() {}
-    }
-
-    private class WizardStep implements Serializable {
-        private AbstractForm inputForm;
-        private Panel confirmationPanel;
-        private WizardStepListener stepListener;
-
-        private WizardStep(AbstractForm inputForm) {
-            this.inputForm = inputForm;
-        }
-
-        private WizardStep(AbstractForm inputForm, Panel confirmationPanel) {
-            this.inputForm = inputForm;
-            this.confirmationPanel = confirmationPanel;
-        }
-
-        public AbstractForm getInputForm() {
-            return inputForm;
-        }
-
-        public Panel getConfirmationPanel() {
-            return confirmationPanel;
-        }
-
-        public WizardStepListener getStepListener() {
-            return stepListener;
-        }
-
-        public void setStepListener(WizardStepListener stepListener) {
-            this.stepListener = stepListener;
-        }
-    }
-
     private class SearchForm extends AbstractForm<RegistrationSearchFormModel> {
 
         private SearchForm(String componentId, IModel<RegistrationSearchFormModel> model) {
@@ -333,8 +270,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
     private abstract class AbstractForm<T> extends BootstrapForm {
 
-        protected WizardStepListener stepListener;
-
         protected final IModel<T> model;
 
         protected AbstractForm(String componentId, IModel<T> model) {
@@ -348,20 +283,5 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         protected void onInitialize() {
             super.onInitialize();
         }
-    }
-
-    private interface WizardStepListener extends Serializable {
-        public void onPrevious();
-
-        public void onNext();
-    }
-
-    private class DefaultWizardStepListener implements WizardStepListener {
-
-        @Override
-        public void onPrevious() {}
-
-        @Override
-        public void onNext() {}
     }
 }
