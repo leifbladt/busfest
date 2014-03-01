@@ -5,6 +5,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.ConfirmationFormModel;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -22,11 +23,10 @@ public class ConfirmationInputPanel extends Panel {
         final BootstrapForm<ConfirmationFormModel> form = new BootstrapForm<>("confirmation", compound);
         form.add(new FormBehavior(FormType.Horizontal));
 
-        FormGroup typeGroup = new CustomFormGroup("totalCostsGroup", Model.of("Gesamtkosten"));
-        // TODO Show total costs in label on uneditable textfield
-        TextField type = new TextField("totalCosts");
-        typeGroup.add(type);
-        form.add(typeGroup);
+        FormGroup totalCostsGroup = new CustomFormGroup("totalCostsGroup", Model.of("Gesamtkosten"));
+        Label totalCosts = new Label("totalCosts");
+        totalCostsGroup.add(totalCosts);
+        form.add(totalCostsGroup);
 
         add(form);
     }
