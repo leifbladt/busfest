@@ -21,9 +21,9 @@ CREATE TABLE conventions (
   convention VARCHAR(255) NOT NULL,
   starts_on DATETIME NOT NULL,
   ends_on DATETIME NOT NULL,
-  overnight_cost_bus INT DEFAULT NULL,
-  overnight_cost_caravan INT DEFAULT NULL,
-  day_visitor_cost INT DEFAULT NULL,
+  overnight_cost_bus DECIMAL(13,2) DEFAULT NULL,
+  overnight_cost_caravan DECIMAL(13,2) DEFAULT NULL,
+  day_visitor_cost DECIMAL(13,2) DEFAULT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)

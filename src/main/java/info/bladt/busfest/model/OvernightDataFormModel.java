@@ -1,5 +1,9 @@
 package info.bladt.busfest.model;
 
+import info.bladt.busfest.BusfestSession;
+import info.bladt.busfest.persistence.Convention;
+import org.joda.money.Money;
+
 import java.io.Serializable;
 
 /**

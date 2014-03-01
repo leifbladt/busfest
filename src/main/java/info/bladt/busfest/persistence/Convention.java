@@ -1,5 +1,9 @@
 package info.bladt.busfest.persistence;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.joda.money.Money;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -24,19 +28,21 @@ public class Convention extends AbstractEntity {
     @Column(name = "ends_on")
     private Date endsOn;
 
-    // TODO Switch to joda-money
     @Column(name = "overnight_cost_bus")
-    private int overnightCostBus;
+    @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
+    private Money overnightCostBus;
 
     @Column(name = "overnight_cost_caravan")
-    private int overnightCostCaravan;
+    @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
+    private Money overnightCostCaravan;
 
     @Column(name = "day_visitor_cost")
-    private int dayVisitorCost;
+    @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
+    private Money dayVisitorCost;
 
     public Convention() {}
 
-    public Convention(String location, String convention, Date startsOn, Date endsOn, int overnightCostBus, int overnightCostCaravan, int dayVisitorCost) {
+    public Convention(String location, String convention, Date startsOn, Date endsOn, Money overnightCostBus, Money overnightCostCaravan, Money dayVisitorCost) {
         this.location = location;
         this.convention = convention;
         this.startsOn = startsOn;
@@ -82,27 +88,27 @@ public class Convention extends AbstractEntity {
         return String.format("%s %tY", getLocation(), getStartsOn());
     }
 
-    public int getOvernightCostBus() {
+    public Money getOvernightCostBus() {
         return overnightCostBus;
     }
 
-    public void setOvernightCostBus(int overnightCostBus) {
+    public void setOvernightCostBus(Money overnightCostBus) {
         this.overnightCostBus = overnightCostBus;
     }
 
-    public int getOvernightCostCaravan() {
+    public Money getOvernightCostCaravan() {
         return overnightCostCaravan;
     }
 
-    public void setOvernightCostCaravan(int overnightCostCaravan) {
+    public void setOvernightCostCaravan(Money overnightCostCaravan) {
         this.overnightCostCaravan = overnightCostCaravan;
     }
 
-    public int getDayVisitorCost() {
+    public Money getDayVisitorCost() {
         return dayVisitorCost;
     }
 
-    public void setDayVisitorCost(int dayVisitorCost) {
+    public void setDayVisitorCost(Money dayVisitorCost) {
         this.dayVisitorCost = dayVisitorCost;
     }
 }
