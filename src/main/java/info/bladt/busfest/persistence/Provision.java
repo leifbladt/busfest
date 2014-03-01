@@ -1,5 +1,9 @@
 package info.bladt.busfest.persistence;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.joda.money.Money;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,11 +20,35 @@ public class Provision extends AbstractEntity {
     @Column(name = "description")
     private String description;
 
-    // TODO Switch to joda-money
     @Column(name = "cost")
-    private int cost;
+    @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
+    private Money cost;
 
     @ManyToOne
     @JoinColumn(name = "convention_id")
     private Convention convention;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Money getCost() {
+        return cost;
+    }
+
+    public void setCost(Money cost) {
+        this.cost = cost;
+    }
+
+    public Convention getConvention() {
+        return convention;
+    }
+
+    public void setConvention(Convention convention) {
+        this.convention = convention;
+    }
 }
