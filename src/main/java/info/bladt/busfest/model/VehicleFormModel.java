@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class VehicleFormModel implements Serializable {
     private String type;
     private String licensePlateNumber;
+    private Integer monthOfManufacture;
+    private Integer yearOfManufacture;
 
     public String getType() {
         return type;
@@ -23,5 +25,31 @@ public class VehicleFormModel implements Serializable {
 
     public void setLicensePlateNumber(String licensePlateNumber) {
         this.licensePlateNumber = licensePlateNumber;
+    }
+
+    public Integer getMonthOfManufacture() {
+        return monthOfManufacture;
+    }
+
+    public void setMonthOfManufacture(Integer monthOfManufacture) {
+        this.monthOfManufacture = monthOfManufacture;
+    }
+
+    public Integer getYearOfManufacture() {
+        return yearOfManufacture;
+    }
+
+    public void setYearOfManufacture(Integer yearOfManufacture) {
+        this.yearOfManufacture = yearOfManufacture;
+    }
+
+    public String getDateOfManufacture() {
+        if (getMonthOfManufacture() != null && getYearOfManufacture() != null) {
+            return String.format("%s/%s", getMonthOfManufacture(), getYearOfManufacture());
+        } else if (getYearOfManufacture() != null) {
+            return getYearOfManufacture().toString();
+        } else {
+            return "";
+        }
     }
 }

@@ -32,10 +32,12 @@ public class VehicleInputPanel extends Panel {
         licensePlateNumberGroup.add(licensePlateNumber);
         form.add(licensePlateNumberGroup);
 
-//        ControlGroup dateOfManufactureGroup = new ControlGroup("dateOfManufactureGroup", Model.of("Baujahr"));
-//        DateTextField dateOfManufacture = new DateTextField("dateOfManufacture");
-//        dateOfManufactureGroup.add(dateOfManufacture);
-//        form.add(dateOfManufactureGroup);
+        FormGroup dateOfManufactureGroup = new CustomFormGroup("dateOfManufactureGroup", Model.of("Baujahr"));
+        TextField monthOfManufacture = new TextField("monthOfManufacture");
+        TextField yearOfManufacture = new TextField("yearOfManufacture");
+        dateOfManufactureGroup.add(monthOfManufacture);
+        dateOfManufactureGroup.add(yearOfManufacture);
+        form.add(dateOfManufactureGroup);
 
         add(form);
     }

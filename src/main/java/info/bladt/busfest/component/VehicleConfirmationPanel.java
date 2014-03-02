@@ -27,8 +27,10 @@ public class VehicleConfirmationPanel extends Panel {
 
         add(new Label("typeLabel", Model.of("Typ")));
         add(new Label("licensePlateNumberLabel", Model.of("Kennzeichen")));
+        add(new Label("dateOfManufactureLabel", Model.of("Baujahr")));
 
         add(new Label("type", new PropertyModel(model, "type")));
         add(new Label("licensePlateNumber", new PropertyModel(model, "licensePlateNumber")));
+        add(new Label("dateOfManufacture", new PropertyModel(model, "dateOfManufacture")));
     }
 }

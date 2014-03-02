@@ -79,6 +79,8 @@ public class ConventionAttendanceService {
         VehicleFormModel object = vehicleFormModel.getObject();
         vehicle.setType(object.getType());
         vehicle.setLicensePlateNumber(object.getLicensePlateNumber());
+        vehicle.setMonthOfManufacture(object.getMonthOfManufacture());
+        vehicle.setYearOfManufacture(object.getYearOfManufacture());
 
         return vehicle;
     }

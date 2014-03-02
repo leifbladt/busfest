@@ -11,7 +11,6 @@ import java.util.Date;
 @Table(name = "vehicles")
 @Entity
 public class Vehicle extends AbstractEntity {
-    // TODO Only month and year of manufacture?
 
     @Column(name = "type")
     private String type;
@@ -19,15 +18,19 @@ public class Vehicle extends AbstractEntity {
     @Column(name = "license_plate_number")
     private String licensePlateNumber;
 
-    @Column(name = "date_of_manufacture")
-    private Date dateOfManufacture;
+    @Column(name = "month_of_manufacture")
+    private Integer monthOfManufacture;
+
+    @Column(name = "year_of_manufacture")
+    private Integer yearOfManufacture;
 
     public Vehicle() {}
 
-    public Vehicle(String type, String licensePlateNumber, Date yearOfManufacture) {
+    public Vehicle(String type, String licensePlateNumber, int monthOfManufacture, int yearOfManufacture) {
         this.type = type;
         this.licensePlateNumber = licensePlateNumber;
-        this.dateOfManufacture = yearOfManufacture;
+        this.monthOfManufacture = monthOfManufacture;
+        this.yearOfManufacture = yearOfManufacture;
     }
 
     public String getLicensePlateNumber() {
@@ -38,12 +41,20 @@ public class Vehicle extends AbstractEntity {
         this.licensePlateNumber = licensePlateNumber;
     }
 
-    public Date getDateOfManufacture() {
-        return dateOfManufacture;
+    public Integer getMonthOfManufacture() {
+        return monthOfManufacture;
     }
 
-    public void setDateOfManufacture(Date yearOfManufacture) {
-        this.dateOfManufacture = yearOfManufacture;
+    public void setMonthOfManufacture(Integer monthOfManufacture) {
+        this.monthOfManufacture = monthOfManufacture;
+    }
+
+    public Integer getYearOfManufacture() {
+        return yearOfManufacture;
+    }
+
+    public void setYearOfManufacture(Integer yearOfManufacture) {
+        this.yearOfManufacture = yearOfManufacture;
     }
 
     public String getType() {

@@ -49,7 +49,8 @@ CREATE TABLE vehicles (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
   type VARCHAR(255),
   license_plate_number VARCHAR(255),
-  date_of_manufacture DATETIME,
+  month_of_manufacture INT DEFAULT NULL,
+  year_of_manufacture INT DEFAULT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)
