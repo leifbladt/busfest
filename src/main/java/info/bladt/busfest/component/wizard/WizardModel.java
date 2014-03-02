@@ -41,4 +41,12 @@ public class WizardModel implements Serializable {
     }
 
     public void finish() {}
+
+    public boolean isFirstStep() {
+        return steps.indexOf(activeStep) == 0;
+    }
+
+    public boolean isLastStep() {
+        return steps.indexOf(activeStep) == (steps.size() - 1);
+    }
 }

@@ -25,6 +25,7 @@ import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -95,7 +96,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
         final WizardModel wizardModel = new WizardModel() {
             public void finish() {
-                System.out.println("really finish");
                 conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel, confirmationFormModel);
             }
         };
@@ -116,9 +116,14 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
             protected void onInitialize() {
                 super.onInitialize();
 
-                add(new BootstrapAjaxButton("previous", Model.of("zurück"), Buttons.Type.Primary) {
+                final WebMarkupContainer buttonBar = new WebMarkupContainer("buttonBar");
+                buttonBar.setOutputMarkupId(true);
+
+                buttonBar.add(new BootstrapAjaxButton("previous", Model.of("zurück"), Buttons.Type.Primary) {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        target.add(buttonBar);
+
                         WizardStep activeStep = wizardModel.getActiveStep();
                         activeStep.getInputForm().setVisible(false);
                         target.add(activeStep.getInputForm());
@@ -133,10 +138,17 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                             target.add(previousStep.getConfirmationPanel());
                         }
                     }
+
+                    @Override
+                    public boolean isEnabled() {
+                        return !wizardModel.isFirstStep();
+                    }
                 });
-                add(new BootstrapAjaxButton("next", Model.of("weiter"), Buttons.Type.Primary) {
+                buttonBar.add(new BootstrapAjaxButton("next", Model.of("weiter"), Buttons.Type.Primary) {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        target.add(buttonBar);
+
                         WizardStep activeStep = wizardModel.getActiveStep();
                         activeStep.getInputForm().setVisible(false);
                         target.add(activeStep.getInputForm());
@@ -151,15 +163,25 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                         nextStep.getInputForm().setVisible(true);
                         target.add(nextStep.getInputForm());
                     }
+
+                    @Override
+                    public boolean isEnabled() {
+                        return !wizardModel.isLastStep();
+                    }
                 });
-                add(new BootstrapAjaxButton("finish", Model.of("fertigstellen"), Buttons.Type.Primary) {
+                buttonBar.add(new BootstrapAjaxButton("finish", Model.of("fertigstellen"), Buttons.Type.Primary) {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        System.out.println("finish");
                         wizardModel.finish();
                         setResponsePage(RegistrationPage.class);
                     }
+
+                    @Override
+                    public boolean isEnabled() {
+                        return wizardModel.isLastStep();
+                    }
                 });
+                add(buttonBar);
             }
         };
         form.add(searchForm);
