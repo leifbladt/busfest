@@ -12,8 +12,6 @@ import org.apache.wicket.model.PropertyModel;
  */
 public class OvernightDataConfirmationPanel extends Panel {
 
-    // TODO Add edit action
-
     private final IModel<? extends OvernightDataFormModel> model;
 
     public OvernightDataConfirmationPanel(String id, IModel<? extends OvernightDataFormModel> model) {

@@ -12,8 +12,6 @@ import org.apache.wicket.model.PropertyModel;
  */
 public class VehicleConfirmationPanel extends Panel {
 
-    // TODO Add edit action
-
     private final IModel<? extends VehicleFormModel> model;
 
     public VehicleConfirmationPanel(String id, IModel<? extends VehicleFormModel> model) {
