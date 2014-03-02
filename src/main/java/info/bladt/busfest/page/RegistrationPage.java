@@ -36,7 +36,7 @@ public class RegistrationPage extends AuthenticatedBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        BootstrapBookmarkablePageLink<NewRegistrationPage> newRegistration = new BootstrapBookmarkablePageLink<NewRegistrationPage>("newRegistration", NewRegistrationPage.class, Buttons.Type.Primary);
+        BootstrapBookmarkablePageLink<NewRegistrationPage> newRegistration = new BootstrapBookmarkablePageLink<>("newRegistration", NewRegistrationPage.class, Buttons.Type.Primary);
         newRegistration.setLabel(Model.of("Neue Anmeldung"));
         add(newRegistration);
 
@@ -45,7 +45,8 @@ public class RegistrationPage extends AuthenticatedBasePage {
         downloadPdf.setDeleteAfterDownload(true);
         add(downloadPdf);
 
-        List<IColumn> columns = new ArrayList<IColumn>();
+        List<IColumn> columns = new ArrayList<>();
+        columns.add(new PropertyColumn(Model.of("Nummer"), "id"));
         columns.add(new PropertyColumn(Model.of("Nachname"), "visitor.lastName"));
         columns.add(new PropertyColumn(Model.of("Vorname"), "visitor.firstName"));
         columns.add(new PropertyColumn(Model.of("Fahrzeugtyp"), "vehicle.type"));
