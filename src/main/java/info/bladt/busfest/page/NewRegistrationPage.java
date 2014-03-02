@@ -144,7 +144,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                         return !wizardModel.isFirstStep();
                     }
                 });
-                buttonBar.add(new BootstrapAjaxButton("next", Model.of("weiter"), Buttons.Type.Primary) {
+                BootstrapAjaxButton next = new BootstrapAjaxButton("next", Model.of("weiter"), Buttons.Type.Primary) {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                         target.add(buttonBar);
@@ -168,7 +168,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                     public boolean isEnabled() {
                         return !wizardModel.isLastStep();
                     }
-                });
+                };
+                buttonBar.add(next);
                 buttonBar.add(new BootstrapAjaxButton("finish", Model.of("fertigstellen"), Buttons.Type.Primary) {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -182,6 +183,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                     }
                 });
                 add(buttonBar);
+                setDefaultButton(next);
             }
         };
         form.add(searchForm);
