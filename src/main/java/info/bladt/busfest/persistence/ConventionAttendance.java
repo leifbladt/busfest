@@ -1,5 +1,10 @@
 package info.bladt.busfest.persistence;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.joda.money.Money;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +16,6 @@ import javax.persistence.Table;
 @Table(name = "convention_attendances")
 @Entity
 public class ConventionAttendance extends AbstractEntity {
-    // TODO Save calculated costs?
 
     @ManyToOne
     @JoinColumn(name = "convention_id", nullable = false)
@@ -29,12 +33,17 @@ public class ConventionAttendance extends AbstractEntity {
     @JoinColumn(name = "overnight_data_id")
     private OvernightData overnightData;
 
+    @Column(name = "total_costs")
+    @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
+    private Money totalCosts;
+
     public ConventionAttendance() {}
 
-    public ConventionAttendance(Convention convention, Visitor visitor, Vehicle vehicle) {
+    public ConventionAttendance(Convention convention, Visitor visitor, Vehicle vehicle, Money totalCosts) {
         this.convention = convention;
         this.visitor = visitor;
         this.vehicle = vehicle;
+        this.totalCosts = totalCosts;
     }
 
     public Convention getConvention() {
@@ -67,5 +76,13 @@ public class ConventionAttendance extends AbstractEntity {
 
     public void setOvernightData(OvernightData overnightData) {
         this.overnightData = overnightData;
+    }
+
+    public Money getTotalCosts() {
+        return totalCosts;
+    }
+
+    public void setTotalCosts(Money totalCosts) {
+        this.totalCosts = totalCosts;
     }
 }

@@ -96,7 +96,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         final WizardModel wizardModel = new WizardModel() {
             public void finish() {
                 System.out.println("really finish");
-                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel);
+                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel, confirmationFormModel);
             }
         };
         WizardStep searchStep = new WizardStep(searchForm);

@@ -72,6 +72,7 @@ CREATE TABLE convention_attendances (
   visitor_id BIGINT(20) NOT NULL,
   vehicle_id BIGINT(20) DEFAULT NULL,
   overnight_data_id BIGINT(20) DEFAULT NULL,
+  total_costs DECIMAL(13,2) DEFAULT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   CONSTRAINT FK_convention_attendances_convention_id FOREIGN KEY (convention_id) REFERENCES conventions (id),

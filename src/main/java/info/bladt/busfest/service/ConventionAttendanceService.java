@@ -1,6 +1,7 @@
 package info.bladt.busfest.service;
 
 import info.bladt.busfest.BusfestSession;
+import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
@@ -35,7 +36,12 @@ public class ConventionAttendanceService {
     private ConventionAttendanceRepository conventionAttendanceRepository;
 
     // TODO Use transaction
-    public void createConventionAttendance(IModel<VisitorFormModel> visitorFormModel, IModel<VehicleFormModel> vehicleFormModel, IModel<OvernightDataFormModel> overnightDataFormModel) {
+    public void createConventionAttendance(
+            IModel<VisitorFormModel> visitorFormModel,
+            IModel<VehicleFormModel> vehicleFormModel,
+            IModel<OvernightDataFormModel> overnightDataFormModel,
+            IModel<ConfirmationFormModel> confirmationFormModel) {
+
         Visitor visitor = visitorRepository.save(createVisitor(visitorFormModel));
         Vehicle vehicle = vehicleRepository.save(createVehicle(vehicleFormModel));
 
@@ -43,6 +49,7 @@ public class ConventionAttendanceService {
         conventionAttendance.setConvention(BusfestSession.get().getActiveConvention().getObject());
         conventionAttendance.setVisitor(visitor);
         conventionAttendance.setVehicle(vehicle);
+        conventionAttendance.setTotalCosts(confirmationFormModel.getObject().getTotalCosts());
 
         if (overnightDataFormModel.getObject().getOvernightVisitor()) {
             OvernightData overnightData = overnightDataRepository.save(createOvernightData(overnightDataFormModel));
