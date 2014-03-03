@@ -4,8 +4,10 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.BootstrapForm;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.model.RegistrationSearchFormModel;
+import info.bladt.busfest.persistence.ConventionAttendance;
 import info.bladt.busfest.persistence.Visitor;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
+import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.ThrottlingSettings;
@@ -29,6 +31,9 @@ public class SearchInputPanel extends Panel {
 
     @SpringBean
     public VisitorRepository visitorRepository;
+
+    @SpringBean
+    public ConventionAttendanceService conventionAttendanceService;
 
     public SearchInputPanel(String id, final IModel<RegistrationSearchFormModel> model) {
         super(id, model);
@@ -67,11 +72,10 @@ public class SearchInputPanel extends Panel {
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
                 visitorChoices.clear();
+                List<ConventionAttendance> returningVisitors = conventionAttendanceService.findReturningVisitors(model.getObject().getQuery());
 
-                String query1 = "%" + model.getObject().getQuery() + "%";
-                List<Visitor> visitors = visitorRepository.findByFirstNameLikeOrLastNameLikeAllIgnoreCase(query1, query1);
-                for (Visitor visitor : visitors) {
-                    visitorChoices.add(visitor);
+                for (ConventionAttendance conventionAttendance : returningVisitors) {
+                    visitorChoices.add(conventionAttendance.getVisitor());
                 }
 
                 target.add(visitor);

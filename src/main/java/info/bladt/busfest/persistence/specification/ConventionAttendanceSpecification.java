@@ -21,4 +21,16 @@ public class ConventionAttendanceSpecification {
             }
         };
     }
+
+    public static Specification<ConventionAttendance> isLikeName(final String name) {
+        return new Specification<ConventionAttendance>() {
+            @Override
+            public Predicate toPredicate(Root<ConventionAttendance> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.or(
+                        cb.equal(root.get("visitor").get("firstName"), name),
+                        cb.equal(root.get("visitor").get("lastName"), name)
+                );
+            }
+        };
+    }
 }

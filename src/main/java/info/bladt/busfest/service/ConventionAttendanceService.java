@@ -17,6 +17,11 @@ import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+import static info.bladt.busfest.persistence.specification.ConventionAttendanceSpecification.isLikeName;
+import static org.springframework.data.jpa.domain.Specifications.where;
+
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
  */
@@ -57,6 +62,14 @@ public class ConventionAttendanceService {
         }
 
         conventionAttendanceRepository.save(conventionAttendance);
+    }
+
+    public List<ConventionAttendance> findReturningVisitors(String query) {
+        // TODO Visitor instead
+        // TODO Case insensitive
+        // TODO Like (%query%) name
+        // TODO License plate
+        return conventionAttendanceRepository.findAll(where(isLikeName(query)));
     }
 
     private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
