@@ -37,7 +37,7 @@ CREATE TABLE visitors (
   zip_code VARCHAR(10),
   city VARCHAR(255),
   country VARCHAR(255),
-  date_of_birth DATETIME,
+  date_of_birth DATE,
   telephone_number VARCHAR(255),
   email_address VARCHAR(255),
   created_at DATETIME NOT NULL,
