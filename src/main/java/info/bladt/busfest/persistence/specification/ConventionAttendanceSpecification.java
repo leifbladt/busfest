@@ -26,9 +26,14 @@ public class ConventionAttendanceSpecification {
         return new Specification<ConventionAttendance>() {
             @Override
             public Predicate toPredicate(Root<ConventionAttendance> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                if (query == null) {
+                    return null;
+                }
+
+                String nameQuery = "%" + name.toLowerCase() + "%";
                 return cb.or(
-                        cb.equal(root.get("visitor").get("firstName"), name),
-                        cb.equal(root.get("visitor").get("lastName"), name)
+                        cb.like(cb.lower(root.get("visitor").<String>get("firstName")), nameQuery),
+                        cb.like(cb.lower(root.get("visitor").<String>get("lastName")), nameQuery)
                 );
             }
         };

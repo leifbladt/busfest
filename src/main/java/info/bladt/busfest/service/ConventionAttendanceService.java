@@ -17,6 +17,7 @@ import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static info.bladt.busfest.persistence.specification.ConventionAttendanceSpecification.isLikeName;
@@ -65,11 +66,14 @@ public class ConventionAttendanceService {
     }
 
     public List<ConventionAttendance> findReturningVisitors(String query) {
-        // TODO Visitor instead
-        // TODO Case insensitive
-        // TODO Like (%query%) name
+        // TODO Return visitor instead
         // TODO License plate
-        return conventionAttendanceRepository.findAll(where(isLikeName(query)));
+
+        if (query == null) {
+            return new ArrayList<>();
+        } else {
+            return conventionAttendanceRepository.findAll(where(isLikeName(query)));
+        }
     }
 
     private Visitor createVisitor(IModel<VisitorFormModel> visitorFormModel) {
