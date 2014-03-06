@@ -4,8 +4,15 @@
 <body>
 
 <wicket:extend>
-    <a wicket:id="newRegistration">[new registration]</a>
-    <a wicket:id="downloadPdf">[download pdf]</a><br>
+    <div wicket:id="printNotice" class="alert alert-success">
+        <span wicket:id="printDescription"></span>
+        <a wicket:id="downloadPdf">Anmeldebest&auml;tigung ausdrucken</a><br>
+    </div>
+
+    <p>
+        <a wicket:id="newRegistration">[new registration]</a>
+    </p>
+
     <table wicket:id="latestAttendances">[latest attendances]</table>
 </wicket:extend>
 

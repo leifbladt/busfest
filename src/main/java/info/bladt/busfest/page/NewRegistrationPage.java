@@ -16,7 +16,6 @@ import info.bladt.busfest.component.VisitorInputPanel;
 import info.bladt.busfest.component.wizard.DefaultWizardStepListener;
 import info.bladt.busfest.component.wizard.WizardModel;
 import info.bladt.busfest.component.wizard.WizardStep;
-import info.bladt.busfest.component.wizard.WizardStepListener;
 import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
 import info.bladt.busfest.model.RegistrationSearchFormModel;
@@ -27,16 +26,12 @@ import info.bladt.busfest.service.ConventionAttendanceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -96,7 +91,10 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
         final WizardModel wizardModel = new WizardModel() {
             public void finish() {
-                conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel, confirmationFormModel);
+                Long conventionAttendanceId = conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel, confirmationFormModel);
+                PageParameters pageParameters = new PageParameters();
+                pageParameters.add(RegistrationPage.PARAMETER_ID, conventionAttendanceId);
+                setResponsePage(RegistrationPage.class, pageParameters);
             }
         };
         WizardStep searchStep = new WizardStep(searchForm);
@@ -174,7 +172,6 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                         wizardModel.finish();
-                        setResponsePage(RegistrationPage.class);
                     }
 
                     @Override

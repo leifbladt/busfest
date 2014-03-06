@@ -42,7 +42,7 @@ public class ConventionAttendanceService {
     private ConventionAttendanceRepository conventionAttendanceRepository;
 
     // TODO Use transaction
-    public void createConventionAttendance(
+    public Long createConventionAttendance(
             IModel<VisitorFormModel> visitorFormModel,
             IModel<VehicleFormModel> vehicleFormModel,
             IModel<OvernightDataFormModel> overnightDataFormModel,
@@ -62,7 +62,8 @@ public class ConventionAttendanceService {
             conventionAttendance.setOvernightData(overnightData);
         }
 
-        conventionAttendanceRepository.save(conventionAttendance);
+        conventionAttendance = conventionAttendanceRepository.save(conventionAttendance);
+        return conventionAttendance.getId();
     }
 
     public List<ConventionAttendance> findReturningVisitors(String query) {

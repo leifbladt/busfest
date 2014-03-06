@@ -10,9 +10,12 @@ import info.bladt.busfest.service.PdfService;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.DownloadLink;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
@@ -26,11 +29,21 @@ import java.util.List;
 @MountPath("/registration")
 public class RegistrationPage extends AuthenticatedBasePage {
 
+    public final static String PARAMETER_ID = "id";
+
     @SpringBean
     PdfService pdfService;
 
     @SpringBean
     VisitorRepository visitorRepository;
+
+    private PdfFileModel pdfFileModel;
+
+    public RegistrationPage() {}
+
+    public RegistrationPage(PageParameters parameters) {
+        pdfFileModel = new PdfFileModel(parameters.get(PARAMETER_ID).toLong());
+    }
 
     @Override
     protected void onInitialize() {
@@ -41,9 +54,15 @@ public class RegistrationPage extends AuthenticatedBasePage {
         add(newRegistration);
 
         // TODO Customize filename with id and name
-        DownloadLink downloadPdf = new DownloadLink("downloadPdf", new PdfFileModel(), "anmeldung.pdf");
+        DownloadLink downloadPdf = new DownloadLink("downloadPdf", pdfFileModel, "anmeldung.pdf");
         downloadPdf.setDeleteAfterDownload(true);
-        add(downloadPdf);
+//        add(downloadPdf);
+
+        WebMarkupContainer print = new WebMarkupContainer("printNotice");
+        print.add(new Label("printDescription", Model.of("Die Anmeldung war erfolgreich.")));
+        print.add(downloadPdf);
+        print.setVisible(pdfFileModel != null);
+        add(print);
 
         List<IColumn> columns = new ArrayList<>();
         columns.add(new PropertyColumn(Model.of("Nummer"), "id"));
@@ -59,6 +78,10 @@ public class RegistrationPage extends AuthenticatedBasePage {
     }
 
     private class PdfFileModel extends LoadableDetachableModel<File> {
+
+        public PdfFileModel(Long id) {
+
+        }
 
         @Override
         protected File load() {
