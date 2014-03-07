@@ -51,4 +51,20 @@ public class ConventionAttendanceProvision extends AbstractEntity {
     public void setProvision(Provision provision) {
         this.provision = provision;
     }
+
+    public Date getDeliveredOn() {
+        return deliveredOn;
+    }
+
+    public void setDeliveredOn(Date deliveredOn) {
+        this.deliveredOn = deliveredOn;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

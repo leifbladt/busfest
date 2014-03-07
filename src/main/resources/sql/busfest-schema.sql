@@ -85,12 +85,12 @@ CREATE TABLE convention_attendances (
 CREATE TABLE convention_attendance_provisions (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
   convention_attendance_id BIGINT(20) NOT NULL,
-  provisions_id BIGINT(20) NOT NULL,
+  provision_id BIGINT(20) NOT NULL,
   delivered_on DATE NOT NULL,
   count INT NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   CONSTRAINT FK_cap_convention_attendance_id FOREIGN KEY (convention_attendance_id) REFERENCES convention_attendances (id),
-  CONSTRAINT FK_cap_provisions_id FOREIGN KEY (provisions_id) REFERENCES provisions (id),
+  CONSTRAINT FK_cap_provisions_id FOREIGN KEY (provision_id) REFERENCES provisions (id),
   PRIMARY KEY (id)
 );

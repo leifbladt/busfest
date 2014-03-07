@@ -3,14 +3,19 @@ package info.bladt.busfest.service;
 import info.bladt.busfest.BusfestSession;
 import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
+import info.bladt.busfest.model.ProvisionFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
 import info.bladt.busfest.persistence.ConventionAttendance;
+import info.bladt.busfest.persistence.ConventionAttendanceProvision;
 import info.bladt.busfest.persistence.OvernightData;
+import info.bladt.busfest.persistence.Provision;
 import info.bladt.busfest.persistence.Vehicle;
 import info.bladt.busfest.persistence.Visitor;
+import info.bladt.busfest.persistence.repository.ConventionAttendanceProvisionRepository;
 import info.bladt.busfest.persistence.repository.ConventionAttendanceRepository;
 import info.bladt.busfest.persistence.repository.OvernightDataRepository;
+import info.bladt.busfest.persistence.repository.ProvisionRepository;
 import info.bladt.busfest.persistence.repository.VehicleRepository;
 import info.bladt.busfest.persistence.repository.VisitorRepository;
 import org.apache.wicket.model.IModel;
@@ -18,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static info.bladt.busfest.persistence.specification.ConventionAttendanceSpecification.isLikeName;
@@ -39,13 +45,20 @@ public class ConventionAttendanceService {
     private OvernightDataRepository overnightDataRepository;
 
     @Autowired
+    private ProvisionRepository provisionRepository;
+
+    @Autowired
     private ConventionAttendanceRepository conventionAttendanceRepository;
+
+    @Autowired
+    private ConventionAttendanceProvisionRepository conventionAttendanceProvisionRepository;
 
     // TODO Use transaction
     public Long createConventionAttendance(
             IModel<VisitorFormModel> visitorFormModel,
             IModel<VehicleFormModel> vehicleFormModel,
             IModel<OvernightDataFormModel> overnightDataFormModel,
+            IModel<ProvisionFormModel> provisionFormModelIModel,
             IModel<ConfirmationFormModel> confirmationFormModel) {
 
         Visitor visitor = visitorRepository.save(createVisitor(visitorFormModel));
@@ -63,7 +76,30 @@ public class ConventionAttendanceService {
         }
 
         conventionAttendance = conventionAttendanceRepository.save(conventionAttendance);
+
+        if (overnightDataFormModel.getObject().getOvernightVisitor()) {
+            // TODO Set correct date
+            // TODO Only create when count>0
+            ProvisionFormModel provisionFormModel = provisionFormModelIModel.getObject();
+            createConventionAttendanceProvision(conventionAttendance, 1L, new Date(), provisionFormModel.getP1CountSat());
+            createConventionAttendanceProvision(conventionAttendance, 2L, new Date(), provisionFormModel.getP2CountSat());
+            createConventionAttendanceProvision(conventionAttendance, 3L, new Date(), provisionFormModel.getP3CountSat());
+            createConventionAttendanceProvision(conventionAttendance, 4L, new Date(), provisionFormModel.getP1CountSun());
+            createConventionAttendanceProvision(conventionAttendance, 5L, new Date(), provisionFormModel.getP2CountSun());
+            createConventionAttendanceProvision(conventionAttendance, 6L, new Date(), provisionFormModel.getP3CountSun());
+        }
+
         return conventionAttendance.getId();
+    }
+
+    private ConventionAttendanceProvision createConventionAttendanceProvision(ConventionAttendance conventionAttendance, Long provisionId, Date deliveredOn, int count) {
+        Provision provision = provisionRepository.findOne(provisionId);
+        ConventionAttendanceProvision conventionAttendanceProvision = new ConventionAttendanceProvision();
+        conventionAttendanceProvision.setConventionAttendance(conventionAttendance);
+        conventionAttendanceProvision.setProvision(provision);
+        conventionAttendanceProvision.setDeliveredOn(deliveredOn);
+        conventionAttendanceProvision.setCount(count);
+        return conventionAttendanceProvisionRepository.save(conventionAttendanceProvision);
     }
 
     public List<ConventionAttendance> findReturningVisitors(String query) {

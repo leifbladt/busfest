@@ -8,6 +8,8 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormType;
 import info.bladt.busfest.component.ConfirmationInputPanel;
 import info.bladt.busfest.component.OvernightDataConfirmationPanel;
 import info.bladt.busfest.component.OvernightDataInputPanel;
+import info.bladt.busfest.component.ProvisionConfirmationPanel;
+import info.bladt.busfest.component.ProvisionInputPanel;
 import info.bladt.busfest.component.SearchInputPanel;
 import info.bladt.busfest.component.VehicleConfirmationPanel;
 import info.bladt.busfest.component.VehicleInputPanel;
@@ -18,6 +20,7 @@ import info.bladt.busfest.component.wizard.WizardModel;
 import info.bladt.busfest.component.wizard.WizardStep;
 import info.bladt.busfest.model.ConfirmationFormModel;
 import info.bladt.busfest.model.OvernightDataFormModel;
+import info.bladt.busfest.model.ProvisionFormModel;
 import info.bladt.busfest.model.RegistrationSearchFormModel;
 import info.bladt.busfest.model.VehicleFormModel;
 import info.bladt.busfest.model.VisitorFormModel;
@@ -53,6 +56,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         final IModel<VisitorFormModel> visitorFormModel = Model.of(new VisitorFormModel());
         final IModel<VehicleFormModel> vehicleFormModel = Model.of(new VehicleFormModel());
         final IModel<OvernightDataFormModel> overnightDataFormModel = Model.of(new OvernightDataFormModel());
+        final IModel<ProvisionFormModel> provisionFormModel = Model.of(new ProvisionFormModel());
         final IModel<ConfirmationFormModel> confirmationFormModel = Model.of(new ConfirmationFormModel(overnightDataFormModel));
 
         SearchForm searchForm = new SearchForm("search", searchFormModel);
@@ -80,10 +84,19 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         overnightDataForm.setOutputMarkupPlaceholderTag(true);
         overnightDataForm.setVisible(false);
 
-        OvernightDataConfirmationPanel overnightDataConfirmationPanel = new OvernightDataConfirmationPanel("overnightDataConfirmation", overnightDataFormModel);
-        overnightDataConfirmationPanel.setOutputMarkupPlaceholderTag(true);
-        overnightDataConfirmationPanel.setVisible(false);
-        add(overnightDataConfirmationPanel);
+        OvernightDataConfirmationPanel overnightDataConfirmation = new OvernightDataConfirmationPanel("overnightDataConfirmation", overnightDataFormModel);
+        overnightDataConfirmation.setOutputMarkupPlaceholderTag(true);
+        overnightDataConfirmation.setVisible(false);
+        add(overnightDataConfirmation);
+
+        ProvisionForm provisionForm = new ProvisionForm("provision", provisionFormModel);
+        provisionForm.setOutputMarkupPlaceholderTag(true);
+        provisionForm.setVisible(false);
+
+        ProvisionConfirmationPanel provisionConfirmation = new ProvisionConfirmationPanel("provisionConfirmation", provisionFormModel);
+        provisionConfirmation.setOutputMarkupPlaceholderTag(true);
+        provisionConfirmation.setVisible(false);
+        add(provisionConfirmation);
 
         ConfirmationForm confirmationForm = new ConfirmationForm("confirmation", confirmationFormModel);
         confirmationForm.setOutputMarkupPlaceholderTag(true);
@@ -91,7 +104,8 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
         final WizardModel wizardModel = new WizardModel() {
             public void finish() {
-                Long conventionAttendanceId = conventionAttendanceService.createConventionAttendance(visitorFormModel, vehicleFormModel, overnightDataFormModel, confirmationFormModel);
+                Long conventionAttendanceId = conventionAttendanceService.createConventionAttendance(
+                        visitorFormModel, vehicleFormModel, overnightDataFormModel, provisionFormModel, confirmationFormModel);
                 PageParameters pageParameters = new PageParameters();
                 pageParameters.add(RegistrationPage.PARAMETER_ID, conventionAttendanceId);
                 setResponsePage(RegistrationPage.class, pageParameters);
@@ -101,8 +115,11 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         wizardModel.add(searchStep);
         wizardModel.add(new WizardStep(visitorForm, visitorConfirmation));
         wizardModel.add(new WizardStep(vehicleForm, vehicleConfirmation));
-        WizardStep overnightDataStep = new WizardStep(overnightDataForm, overnightDataConfirmationPanel);
+        WizardStep overnightDataStep = new WizardStep(overnightDataForm, overnightDataConfirmation);
         wizardModel.add(overnightDataStep);
+        // TODO Show provisions step only for overnight guests
+        WizardStep provisionStep = new WizardStep(provisionForm, provisionConfirmation);
+        wizardModel.add(provisionStep);
         WizardStep confirmationStep = new WizardStep(confirmationForm);
         wizardModel.add(confirmationStep);
 
@@ -187,6 +204,7 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
         form.add(visitorForm);
         form.add(vehicleForm);
         form.add(overnightDataForm);
+        form.add(provisionForm);
         form.add(confirmationForm);
         add(form);
 
@@ -271,6 +289,21 @@ public class NewRegistrationPage extends AuthenticatedBasePage {
 
             OvernightDataInputPanel overnightDataInputPanel = new OvernightDataInputPanel("overnightDataInput", model);
             add(overnightDataInputPanel);
+        }
+    }
+
+    private class ProvisionForm extends AbstractForm<ProvisionFormModel> {
+
+        protected ProvisionForm(String componentId, IModel<ProvisionFormModel> model) {
+            super(componentId, model);
+        }
+
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
+            ProvisionInputPanel provisionInputPanel = new ProvisionInputPanel("provisionInput", model);
+            add(provisionInputPanel);
         }
     }
 
