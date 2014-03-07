@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS convention_attendances;
 DROP TABLE IF EXISTS overnight_data;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS visitors;
+DROP TABLE IF EXISTS convention_attendance_provisions;
 DROP TABLE IF EXISTS conventions;
 
 CREATE TABLE provisions (
@@ -78,5 +79,18 @@ CREATE TABLE convention_attendances (
   CONSTRAINT FK_convention_attendances_convention_id FOREIGN KEY (convention_id) REFERENCES conventions (id),
   CONSTRAINT FK_convention_attendances_visitor_id FOREIGN KEY (visitor_id) REFERENCES visitors (id),
   CONSTRAINT FK_convention_attendances_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE convention_attendance_provisions (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  convention_attendance_id BIGINT(20) NOT NULL,
+  provisions_id BIGINT(20) NOT NULL,
+  delivered_on DATE NOT NULL,
+  count INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  CONSTRAINT FK_cap_convention_attendance_id FOREIGN KEY (convention_attendance_id) REFERENCES convention_attendances (id),
+  CONSTRAINT FK_cap_provisions_id FOREIGN KEY (provisions_id) REFERENCES provisions (id),
   PRIMARY KEY (id)
 );

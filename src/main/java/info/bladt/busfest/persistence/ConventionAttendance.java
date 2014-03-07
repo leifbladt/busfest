@@ -8,7 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 
 /**
  * Created by leif on 09.02.14.
@@ -32,6 +34,9 @@ public class ConventionAttendance extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "overnight_data_id")
     private OvernightData overnightData;
+
+    @OneToMany(mappedBy = "conventionAttendance")
+    private Collection<ConventionAttendanceProvision> conventionAttendanceProvisions;
 
     @Column(name = "total_costs")
     @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
@@ -80,6 +85,14 @@ public class ConventionAttendance extends AbstractEntity {
 
     public Money getTotalCosts() {
         return totalCosts;
+    }
+
+    public Collection<ConventionAttendanceProvision> getConventionAttendanceProvisions() {
+        return conventionAttendanceProvisions;
+    }
+
+    public void setConventionAttendanceProvisions(Collection<ConventionAttendanceProvision> conventionAttendanceProvisions) {
+        this.conventionAttendanceProvisions = conventionAttendanceProvisions;
     }
 
     public void setTotalCosts(Money totalCosts) {
