@@ -79,7 +79,6 @@ public class ConventionAttendanceService {
 
         if (overnightDataFormModel.getObject().getOvernightVisitor()) {
             // TODO Set correct date
-            // TODO Only create when count>0
             ProvisionFormModel provisionFormModel = provisionFormModelIModel.getObject();
             createConventionAttendanceProvision(conventionAttendance, 1L, new Date(), provisionFormModel.getP1CountSat());
             createConventionAttendanceProvision(conventionAttendance, 2L, new Date(), provisionFormModel.getP2CountSat());
@@ -92,14 +91,16 @@ public class ConventionAttendanceService {
         return conventionAttendance.getId();
     }
 
-    private ConventionAttendanceProvision createConventionAttendanceProvision(ConventionAttendance conventionAttendance, Long provisionId, Date deliveredOn, int count) {
-        Provision provision = provisionRepository.findOne(provisionId);
-        ConventionAttendanceProvision conventionAttendanceProvision = new ConventionAttendanceProvision();
-        conventionAttendanceProvision.setConventionAttendance(conventionAttendance);
-        conventionAttendanceProvision.setProvision(provision);
-        conventionAttendanceProvision.setDeliveredOn(deliveredOn);
-        conventionAttendanceProvision.setCount(count);
-        return conventionAttendanceProvisionRepository.save(conventionAttendanceProvision);
+    private void createConventionAttendanceProvision(ConventionAttendance conventionAttendance, Long provisionId, Date deliveredOn, int count) {
+        if (count > 0) {
+            Provision provision = provisionRepository.findOne(provisionId);
+            ConventionAttendanceProvision conventionAttendanceProvision = new ConventionAttendanceProvision();
+            conventionAttendanceProvision.setConventionAttendance(conventionAttendance);
+            conventionAttendanceProvision.setProvision(provision);
+            conventionAttendanceProvision.setDeliveredOn(deliveredOn);
+            conventionAttendanceProvision.setCount(count);
+            conventionAttendanceProvisionRepository.save(conventionAttendanceProvision);
+        }
     }
 
     public List<ConventionAttendance> findReturningVisitors(String query) {
