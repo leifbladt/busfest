@@ -6,6 +6,7 @@ import org.joda.money.Money;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -35,7 +36,7 @@ public class ConventionAttendance extends AbstractEntity {
     @JoinColumn(name = "overnight_data_id")
     private OvernightData overnightData;
 
-    @OneToMany(mappedBy = "conventionAttendance")
+    @OneToMany(mappedBy = "conventionAttendance", fetch = FetchType.EAGER)
     private Collection<ConventionAttendanceProvision> conventionAttendanceProvisions;
 
     @Column(name = "total_costs")

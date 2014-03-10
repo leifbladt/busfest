@@ -6,8 +6,12 @@ import org.joda.money.Money;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author <a href="mailto:leif.bladt@1und1.de">Leif Bladt</a>
@@ -39,6 +43,9 @@ public class Convention extends AbstractEntity {
     @Column(name = "day_visitor_cost")
     @Type(type = "org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmount", parameters = { @Parameter(name = "currencyCode", value = "EUR") })
     private Money dayVisitorCost;
+
+    @OneToMany(mappedBy = "convention", fetch = FetchType.EAGER)
+    private List<Provision> provisions;
 
     public Convention() {}
 
@@ -110,5 +117,9 @@ public class Convention extends AbstractEntity {
 
     public void setDayVisitorCost(Money dayVisitorCost) {
         this.dayVisitorCost = dayVisitorCost;
+    }
+
+    public Collection<Provision> getProvisions() {
+        return provisions;
     }
 }
